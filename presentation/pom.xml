@@ -26,6 +26,21 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.gambleton</groupId>
+            <artifactId>models</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.gambleton</groupId>
+            <artifactId>logic.abstraction</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.gambleton</groupId>
+            <artifactId>factory</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
