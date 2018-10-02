@@ -1,4 +1,4 @@
-package com.gambleton;
+package com.gambleton.models;
 
 /**
  * The role is used for getting the difference in authorisation between different users.

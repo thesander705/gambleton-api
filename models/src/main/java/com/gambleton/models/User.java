@@ -1,4 +1,4 @@
-package com.gambleton;
+package com.gambleton.models;
 
 /**
  * The user is a person that is registered to the website.

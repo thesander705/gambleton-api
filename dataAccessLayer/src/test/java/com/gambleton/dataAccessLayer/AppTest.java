@@ -1,4 +1,4 @@
-package com.gambleton;
+package com.gambleton.dataAccessLayer;
 
 import static org.junit.Assert.assertTrue;
 

@@ -1,4 +1,4 @@
-package com.gambleton;
+package com.gambleton.factory;
 
 /**
  * Hello world!

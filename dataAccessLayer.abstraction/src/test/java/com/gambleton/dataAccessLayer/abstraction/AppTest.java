@@ -1,4 +1,4 @@
-package com.gambleton;
+package com.gambleton.dataAccessLayer.abstraction;
 
 import static org.junit.Assert.assertTrue;
 

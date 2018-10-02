@@ -1,4 +1,4 @@
-package com.gambleton;
+package com.gambleton.repository;
 
 import static org.junit.Assert.assertTrue;
 
