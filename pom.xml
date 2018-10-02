@@ -13,6 +13,7 @@
     <module>logic</module>
     <module>repository.abstraction</module>
     <module>repository</module>
+    <module>dataAccessLayer.abstraction</module>
   </modules>
 
   <name>api</name>
