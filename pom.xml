@@ -10,6 +10,7 @@
   <version>1.0-SNAPSHOT</version>
   <modules>
     <module>logic.abstraction</module>
+    <module>logic</module>
   </modules>
 
   <name>api</name>
