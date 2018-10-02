@@ -15,6 +15,7 @@
     <module>repository</module>
     <module>dataAccessLayer.abstraction</module>
     <module>dataAccessLayer</module>
+    <module>models</module>
   </modules>
 
   <name>api</name>
