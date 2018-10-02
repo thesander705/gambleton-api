@@ -5,9 +5,19 @@ package com.gambleton.models;
  */
 public class User {
     /**
+     * The id of the user
+     */
+    private int id;
+
+    /**
      * The username of the user, this is a unique identifier.
      */
     private String username;
+
+    /**
+     * The password of the user, used for authentication.
+     */
+    private String password;
 
     /**
      * The role of a user.
@@ -40,5 +50,33 @@ public class User {
      */
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    /**
+     * @return the id of the user
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id of the user
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password
+     */
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
