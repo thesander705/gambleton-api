@@ -11,6 +11,7 @@
   <modules>
     <module>logic.abstraction</module>
     <module>logic</module>
+    <module>repository.abstraction</module>
   </modules>
 
   <name>api</name>
