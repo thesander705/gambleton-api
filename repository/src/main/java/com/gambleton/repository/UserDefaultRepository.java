@@ -18,8 +18,12 @@ public class UserDefaultRepository implements UserRepository {
     public User getByCredentials(String username, String password) {
         User userFromUserContext = userContext.getByUsername(username);
 
-        if (BCrypt.checkpw(password, userFromUserContext.getPassword())) {
-            return userFromUserContext;
+        try {
+            if (BCrypt.checkpw(password, userFromUserContext.getPassword())) {
+                return userFromUserContext;
+            }
+        } catch (Exception e) {
+            return null;
         }
 
         return null;
