@@ -1,7 +1,7 @@
-package com.gambleton.repository;
+package com.gambleton.dataAccessLayer;
 
+import com.gambleton.dataAccessLayer.abstraction.UserContext;
 import com.gambleton.models.User;
-import com.gambleton.repository.abstraction.UserContext;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;

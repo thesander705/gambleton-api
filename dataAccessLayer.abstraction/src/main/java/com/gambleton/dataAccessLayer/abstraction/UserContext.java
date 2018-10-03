@@ -1,4 +1,4 @@
-package com.gambleton.repository.abstraction;
+package com.gambleton.dataAccessLayer.abstraction;
 
 import com.gambleton.models.User;
 
