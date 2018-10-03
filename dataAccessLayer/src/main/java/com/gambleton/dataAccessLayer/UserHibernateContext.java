@@ -23,13 +23,12 @@ public class UserHibernateContext implements UserContext {
     }
 
     @Override
-    public User getByCredentials(String username, String password) {
+    public User getByUsername(String username) {
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
 
-        Query query = session.createQuery("from User where username=:username and password=:password");
+        Query query = session.createQuery("from User where username=:username");
         query.setParameter("username", username);
-        query.setParameter("password", password);
 
         List users = query.list();
 
