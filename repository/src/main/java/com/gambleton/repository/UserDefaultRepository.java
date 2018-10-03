@@ -3,6 +3,7 @@ package com.gambleton.repository;
 import com.gambleton.dataAccessLayer.abstraction.UserContext;
 import com.gambleton.models.User;
 import com.gambleton.repository.abstraction.UserRepository;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.List;
 
@@ -15,31 +16,37 @@ public class UserDefaultRepository implements UserRepository {
 
     @Override
     public User getByCredentials(String username, String password) {
+        User userFromUserContext = userContext.getByUsername(username);
+
+        if (BCrypt.checkpw(password, userFromUserContext.getPassword())) {
+            return userFromUserContext;
+        }
+
         return null;
     }
 
     @Override
     public void create(User entity) {
-
+        userContext.create(entity);
     }
 
     @Override
     public User get(int id) {
-        return null;
+        return userContext.get(id);
     }
 
     @Override
     public List<User> getAll() {
-        return null;
+        return userContext.getAll();
     }
 
     @Override
     public void update(User entity) {
-
+        userContext.update(entity);
     }
 
     @Override
     public void delete(int id) {
-
+        userContext.delete(id);
     }
 }
