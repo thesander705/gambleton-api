@@ -27,7 +27,9 @@ public class UserDefaultRepository implements UserRepository {
 
     @Override
     public void create(User entity) {
-        userContext.create(entity);
+        User userToCreate = entity;
+        entity.setPassword(BCrypt.hashpw(entity.getPassword(), BCrypt.gensalt(8)));
+        userContext.create(userToCreate);
     }
 
     @Override
