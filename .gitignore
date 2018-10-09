@@ -109,3 +109,7 @@ fabric.properties
 \.idea/
 
 *.iml
+
+# Ignore builds
+**/target
+*/target/*
