@@ -14,6 +14,8 @@ public class UserDefaultLogic implements UserLogic {
 
     @Override
     public User getByCredentials(String username, String password) {
-        return userRepository.getByCredentials(username, password);
+        User user = userRepository.getByCredentials(username, password);
+        user.setPassword("");
+        return user;
     }
 }
