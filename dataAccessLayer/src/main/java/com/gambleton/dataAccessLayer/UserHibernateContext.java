@@ -32,6 +32,10 @@ public class UserHibernateContext implements UserContext {
 
         List users = query.list();
 
+        if (users.size() < 1) {
+            return null;
+        }
+
         return (User) users.get(0);
     }
 
