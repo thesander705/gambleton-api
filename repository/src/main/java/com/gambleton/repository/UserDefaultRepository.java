@@ -34,6 +34,11 @@ public class UserDefaultRepository implements UserRepository {
     }
 
     @Override
+    public User getByAuthToken(String authToken) {
+        return this.userContext.getByAuthToken(authToken);
+    }
+
+    @Override
     public void create(User entity) {
         User userToCreate = entity;
         entity.setPassword(BCrypt.hashpw(entity.getPassword(), BCrypt.gensalt(8)));

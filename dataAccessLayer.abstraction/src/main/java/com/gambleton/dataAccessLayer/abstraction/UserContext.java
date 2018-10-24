@@ -8,4 +8,6 @@ public interface UserContext extends Context<User> {
      * @return the user you wanted.
      */
     User getByUsername(String username);
+
+    User getByAuthToken(String authToken);
 }
