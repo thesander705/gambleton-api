@@ -25,6 +25,11 @@ public class User {
     private Role role;
 
     /**
+     * The authentication token
+     */
+    private String authToken;
+
+    /**
      * @return the username of the user, this is a unique identifier.
      */
     public String getUsername() {
@@ -78,5 +83,13 @@ public class User {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
 }

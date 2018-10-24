@@ -16,6 +16,7 @@
 
         <property name = "username" type = "string"/>
         <property name="password" type="string" />
+        <property name="authToken" type="string" />
         <property name = "role">
             <type name="org.hibernate.type.EnumType">
                 <param name="enumClass">com.gambleton.models.Role</param>
