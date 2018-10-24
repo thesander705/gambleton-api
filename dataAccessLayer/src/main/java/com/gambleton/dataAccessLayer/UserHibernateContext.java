@@ -40,6 +40,23 @@ public class UserHibernateContext implements UserContext {
     }
 
     @Override
+    public User getByAuthToken(String authToken) {
+        Session session = sessionFactory.getCurrentSession();
+        session.beginTransaction();
+
+        Query query = session.createQuery("from User where authToken=:authToken");
+        query.setParameter("authToken", authToken);
+
+        List users = query.list();
+
+        if (users.size() < 1) {
+            return null;
+        }
+
+        return (User) users.get(0);
+    }
+
+    @Override
     public void create(User entity) {
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();

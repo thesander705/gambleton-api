@@ -9,4 +9,7 @@ public interface UserRepository extends Repository<User> {
      * @return the user you wanted.
      */
     User getByCredentials(String username, String password);
+
+    User getByAuthToken(String authToken);
+
 }
