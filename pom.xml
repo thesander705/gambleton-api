@@ -52,7 +52,7 @@
             </activation>
             <properties>
                 <sonar.host.url>
-                    http://sanderdeboer.me:32768
+                    http://sanderdeboer.me:1337
                 </sonar.host.url>
                 <sonar.login>
                     thesander705
