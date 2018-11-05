@@ -75,13 +75,56 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>2.9.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.sonarsource.sonarqube</groupId>
+            <artifactId>sonar-plugin-api</artifactId>
+            <!-- minimal version of SonarQube to support. Note that the groupId was "org.codehaus.sonar" before version 5.2 -->
+            <version>5.6</version>
+            <!-- mandatory scope -->
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.sonarsource.scanner.maven</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <version>3.2</version>
+        </dependency>
     </dependencies>
-
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <sonar.host.url>
+                    http://sanderdeboer.me:32768
+                </sonar.host.url>
+                <sonar.login>
+                    thesander705
+                </sonar.login>
+                <sonar.password>
+                    MBSdB123!
+                </sonar.password>
+            </properties>
+        </profile>
+    </profiles>
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.sonarsource.sonar-packaging-maven-plugin</groupId>
+                <artifactId>sonar-packaging-maven-plugin</artifactId>
+                <version>1.17</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <!-- the entry-point class that extends org.sonar.api.SonarPlugin -->
+                    <pluginClass>com.mycompany.sonar.reference.ExamplePlugin</pluginClass>
+
+                    <!-- advanced properties can be set here. See paragraph "Advanced Build Properties". -->
+                </configuration>
             </plugin>
         </plugins>
     </build>
