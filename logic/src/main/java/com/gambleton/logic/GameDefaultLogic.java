@@ -12,7 +12,10 @@ public class GameDefaultLogic implements GameLogic {
     }
 
     @Override
-    public void CreateGame(Game game) {
-        this.gameRepository.create(game);
+    public void CreateGame(String name, String description) {
+        Game game = new Game();
+        game.setName(name);
+        game.setDescription(description);
+        gameRepository.create(game);
     }
 }
