@@ -4,6 +4,8 @@ import com.gambleton.logic.abstraction.GameLogic;
 import com.gambleton.models.Game;
 import com.gambleton.repository.abstraction.GameRepository;
 
+import java.util.List;
+
 public class GameDefaultLogic implements GameLogic {
     private GameRepository gameRepository;
 
@@ -17,5 +19,10 @@ public class GameDefaultLogic implements GameLogic {
         game.setName(name);
         game.setDescription(description);
         gameRepository.create(game);
+    }
+
+    @Override
+    public List<Game> GetAllGames() {
+        return this.gameRepository.getAll();
     }
 }
