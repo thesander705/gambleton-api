@@ -36,14 +36,20 @@ public class GameHibernateContext implements GameContext {
         session.beginTransaction();
 
 
-        return session.get(Game.class, id);
+        Game game = session.get(Game.class, id);
+        session.getTransaction().commit();
+
+        return game;
     }
 
     @Override
     public List<Game> getAll() {
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
+
         ArrayList<Game> games = (ArrayList<Game>) session.createQuery("from Game").list();
+
+        session.getTransaction().commit();
         return games;
     }
 
