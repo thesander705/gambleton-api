@@ -36,7 +36,10 @@ public class UserHibernateContext implements UserContext {
             return null;
         }
 
-        return (User) users.get(0);
+        User user = (User) users.get(0);
+        session.getTransaction().commit();
+
+        return user;
     }
 
     @Override
@@ -53,7 +56,10 @@ public class UserHibernateContext implements UserContext {
             return null;
         }
 
-        return (User) users.get(0);
+        User user = (User) users.get(0);
+        session.getTransaction().commit();
+
+        return user;
     }
 
     @Override
@@ -64,7 +70,6 @@ public class UserHibernateContext implements UserContext {
         session.save(entity);
 
         session.getTransaction().commit();
-
     }
 
     @Override
@@ -73,15 +78,20 @@ public class UserHibernateContext implements UserContext {
         session.beginTransaction();
 
 
-        return session.get(User.class, id);
+        User user = session.get(User.class, id);
+        session.getTransaction().commit();
 
+        return user;
     }
 
     @Override
     public List<User> getAll() {
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
+
         ArrayList<User> users = (ArrayList<User>) session.createQuery("from User").list();
+
+        session.getTransaction().commit();
         return users;
     }
 
@@ -95,7 +105,6 @@ public class UserHibernateContext implements UserContext {
 
         session.update(toUpdate);
         session.getTransaction().commit();
-
     }
 
     @Override
@@ -106,6 +115,5 @@ public class UserHibernateContext implements UserContext {
         User toDelete = session.get(User.class, id);
         session.delete(toDelete);
         session.getTransaction().commit();
-
     }
 }
