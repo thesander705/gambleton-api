@@ -22,6 +22,10 @@ public class UserHibernateContext implements UserContext {
         }
     }
 
+    public UserHibernateContext(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     @Override
     public User getByUsername(String username) {
         Session session = sessionFactory.getCurrentSession();

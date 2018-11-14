@@ -20,6 +20,10 @@ public class GameHibernateContext implements GameContext {
         }
     }
 
+    public GameHibernateContext(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     @Override
     public void create(Game entity) {
         Session session = sessionFactory.getCurrentSession();
