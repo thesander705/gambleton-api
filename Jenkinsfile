@@ -1,20 +1,15 @@
 pipeline {
     agent any
-
+    tools {
+        maven 'Maven'
+    }
+    options {
+        timeout(time: 5, unit: 'MINUTES')
+    }
     stages {
-        stage('Build') {
+        stage('Installing') {
             steps {
-                echo 'Building..'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
+               sh 'mvn install'
             }
         }
     }
