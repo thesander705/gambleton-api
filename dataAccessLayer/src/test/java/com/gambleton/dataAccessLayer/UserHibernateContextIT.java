@@ -2,12 +2,14 @@ package com.gambleton.dataAccessLayer;
 
 import com.gambleton.models.Role;
 import com.gambleton.models.User;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserHibernateContextIT {
@@ -88,6 +90,31 @@ public class UserHibernateContextIT {
         User userToTest = userHibernateContext.getByAuthToken(authtoken);
 
         if (userToTest.getAuthToken().equals(authtoken)){
+            Assert.assertTrue(true);
+            return;
+        }
+
+        Assert.fail();
+    }
+
+    @Test
+    public void createCreatesAUser(){
+        User user = new User();
+        user.setAuthToken("1234567890");
+        user.setRole(Role.Gambler);
+        user.setUsername("test");
+        user.setPassword("Test123!");
+
+        userHibernateContext.create(user);
+
+        Session session = sessionFactory.getCurrentSession();
+        session.beginTransaction();
+
+        ArrayList<User> users = (ArrayList<User>) session.createQuery("from User").list();
+
+        session.getTransaction().commit();
+
+        if (users != null && !users.isEmpty()){
             Assert.assertTrue(true);
             return;
         }
