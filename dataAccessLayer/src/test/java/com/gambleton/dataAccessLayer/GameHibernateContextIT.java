@@ -115,4 +115,59 @@ public class GameHibernateContextIT {
 
         Assert.fail();
     }
+
+    @Test
+    public void updateUpdatesAGame(){
+        Game game = new Game();
+        game.setName("Test game");
+        game.setDescription("This is a test game");
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        sessionFactory.getCurrentSession().save(game);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        sessionFactory.getCurrentSession().beginTransaction();
+
+        ArrayList<Game> games = (ArrayList<Game>) sessionFactory.getCurrentSession().createQuery("from Game ").list();
+
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        if (games == null || games.isEmpty()){
+            Assert.fail();
+            return;
+        }
+
+        Game gameToGet = games.get(0);
+        int gameId = gameToGet.getId();
+
+        game.setName("New name");
+        game.setDescription("New description");
+
+        this.gameHibernateContext.update(game);
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        games = (ArrayList<Game>) sessionFactory.getCurrentSession().createQuery("from Game ").list();
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        for (Game gameFromCollection : games) {
+            if (gameFromCollection.getId() != gameId){
+                continue;
+            }
+
+            if (!gameFromCollection.getName().equals("New name")){
+                Assert.fail();
+                return;
+            }
+
+            if (!gameFromCollection.getDescription().equals("New description")){
+                Assert.fail();
+                return;
+            }
+
+            Assert.assertTrue(true);
+            return;
+        }
+
+        Assert.fail();
+    }
 }
