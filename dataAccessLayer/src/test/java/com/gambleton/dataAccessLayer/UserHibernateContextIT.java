@@ -218,4 +218,46 @@ public class UserHibernateContextIT {
 
         Assert.fail();
     }
+
+    @Test
+    public void deleteDeletesAUser(){
+        User user = new User();
+        user.setAuthToken("1234567890");
+        user.setRole(Role.Gambler);
+        user.setUsername("test");
+        user.setPassword("Test123!");
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        sessionFactory.getCurrentSession().save(user);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        sessionFactory.getCurrentSession().beginTransaction();
+
+        ArrayList<User> users = (ArrayList<User>) sessionFactory.getCurrentSession().createQuery("from User").list();
+
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        if (users == null || users.isEmpty()){
+            Assert.fail();
+            return;
+        }
+
+        User userToGet = users.get(0);
+        int userId = userToGet.getId();
+
+        this.userHibernateContext.delete(userId);
+
+        sessionFactory.getCurrentSession().beginTransaction();
+
+        users = (ArrayList<User>) sessionFactory.getCurrentSession().createQuery("from User").list();
+
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        if (users == null || users.isEmpty()){
+            Assert.assertTrue(true);
+            return;
+        }
+
+        Assert.fail();
+    }
 }
