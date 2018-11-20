@@ -170,4 +170,43 @@ public class GameHibernateContextIT {
 
         Assert.fail();
     }
+
+    @Test
+    public void deleteDeletesGame(){
+        Game game = new Game();
+        game.setName("Test game");
+        game.setDescription("This is a test game");
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        sessionFactory.getCurrentSession().save(game);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        ArrayList<Game> games = (ArrayList<Game>) sessionFactory.getCurrentSession().createQuery("from Game").list();
+
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        if (games == null || games.isEmpty()){
+            Assert.fail();
+            return;
+        }
+
+        Game gameToGet = games.get(0);
+        int gameId = gameToGet.getId();
+
+        this.gameHibernateContext.delete(gameId);
+
+        sessionFactory.getCurrentSession().beginTransaction();
+
+        games = (ArrayList<Game>) sessionFactory.getCurrentSession().createQuery("from Game ").list();
+
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        if (games == null || games.isEmpty()){
+            Assert.assertTrue(true);
+            return;
+        }
+
+        Assert.fail();
+    }
 }
