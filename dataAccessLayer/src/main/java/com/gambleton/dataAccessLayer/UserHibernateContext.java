@@ -22,7 +22,7 @@ public class UserHibernateContext implements UserContext {
         }
     }
 
-    public UserHibernateContext(SessionFactory sessionFactory) {
+    UserHibernateContext(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 

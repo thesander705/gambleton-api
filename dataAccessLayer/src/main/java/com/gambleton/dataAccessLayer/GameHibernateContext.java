@@ -20,7 +20,7 @@ public class GameHibernateContext implements GameContext {
         }
     }
 
-    public GameHibernateContext(SessionFactory sessionFactory) {
+    GameHibernateContext(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
