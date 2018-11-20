@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameHibernateContextIT {
     private SessionFactory sessionFactory;
@@ -88,6 +89,28 @@ public class GameHibernateContextIT {
         if (gameGotten.getId() == idToGet){
             Assert.assertTrue(true);
             return;
+        }
+
+        Assert.fail();
+    }
+
+    @Test
+    public void getAllGetsAllGames() {
+        Game game = new Game();
+        game.setName("Test game");
+        game.setDescription("This is a test game");
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        sessionFactory.getCurrentSession().save(game);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        List<Game> games = gameHibernateContext.getAll();
+
+        for (Game userFromCollection : games) {
+            if (userFromCollection.getName().equals("Test game")){
+                Assert.assertTrue(true);
+                return;
+            }
         }
 
         Assert.fail();
