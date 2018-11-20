@@ -37,8 +37,8 @@
 
 
         <!-- List of XML mapping files -->
-        <mapping resource = "./User.hbm.xml"/>
-        <mapping resource = "./Game.hbm.xml"/>
+        <mapping resource = "User.hbm.xml"/>
+        <mapping resource = "Game.hbm.xml"/>
 
     </session-factory>
 
