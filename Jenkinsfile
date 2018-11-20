@@ -17,5 +17,10 @@ pipeline {
                 sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar'
             }
         }
+        stage('Running integration tests') {
+            steps{
+                sh 'mvn failsafe:integration-test'
+            }
+        }
     }
 }
