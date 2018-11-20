@@ -29,6 +29,18 @@ public class UserHibernateContextIT {
     }
 
     @Test
+    public void parameterlessConstructorWorks(){
+        try{
+            userHibernateContext = new UserHibernateContext();
+        }catch (Exception e){
+            Assert.fail();
+            return;
+        }
+
+        Assert.assertTrue(true);
+    }
+
+    @Test
     public void getAllGetsAllUsers() {
         User user = new User();
         user.setAuthToken("1234567890");
