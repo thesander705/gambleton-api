@@ -1,14 +1,16 @@
 package com.gambleton.logic;
 
-import com.gambleton.logic.abstraction.UserLogic;
 import com.gambleton.models.Role;
 import com.gambleton.models.User;
 import com.gambleton.repository.abstraction.UserRepository;
-import org.junit.*;
-import static org.mockito.Mockito.*;
+import org.junit.Assert;
+import org.junit.Test;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
-public class UserDefaultLogicTests {
+public class UserDefaultLogicTest {
 
     @Test
     public void getByCredentials_returnsEmptyPassword(){
@@ -25,7 +27,7 @@ public class UserDefaultLogicTests {
 
         when(userRepository.getByCredentials(username,password)).thenReturn(userFromMock);
 
-        UserLogic userLogic = new UserDefaultLogic(userRepository);
+        UserDefaultLogic userLogic = new UserDefaultLogic(userRepository);
         User userFromLogic = userLogic.getByCredentials(username, password);
 
         Assert.assertEquals("", userFromLogic.getPassword());

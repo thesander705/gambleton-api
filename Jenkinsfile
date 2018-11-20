@@ -9,7 +9,12 @@ pipeline {
     stages {
         stage('Installing') {
             steps {
-               sh 'mvn install'
+                sh 'mvn jacoco:prepare-agent install jacoco:report'
+            }
+        }
+        stage('sonarqube') {
+            steps{
+                sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar'
             }
         }
     }
