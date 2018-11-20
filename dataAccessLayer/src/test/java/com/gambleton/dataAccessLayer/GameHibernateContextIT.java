@@ -60,4 +60,36 @@ public class GameHibernateContextIT {
 
         Assert.fail();
     }
+
+    @Test
+    public void getGetsAGameById(){
+        Game game = new Game();
+        game.setName("Test game");
+        game.setDescription("This is a test game");
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        sessionFactory.getCurrentSession().save(game);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        sessionFactory.getCurrentSession().beginTransaction();
+
+        ArrayList<Game> games = (ArrayList<Game>) this.sessionFactory.getCurrentSession().createQuery("from Game").list();
+
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        if (games == null || games.isEmpty()){
+            Assert.fail();
+            return;
+        }
+
+        int idToGet = games.get(0).getId();
+        Game gameGotten = gameHibernateContext.get(idToGet);
+
+        if (gameGotten.getId() == idToGet){
+            Assert.assertTrue(true);
+            return;
+        }
+
+        Assert.fail();
+    }
 }
