@@ -155,4 +155,67 @@ public class UserHibernateContextIT {
 
         Assert.fail();
     }
+
+    @Test
+    public void updatedUpdatesAUser(){
+        User user = new User();
+        user.setAuthToken("1234567890");
+        user.setRole(Role.Gambler);
+        user.setUsername("test");
+        user.setPassword("Test123!");
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        sessionFactory.getCurrentSession().save(user);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        sessionFactory.getCurrentSession().beginTransaction();
+
+        ArrayList<User> users = (ArrayList<User>) sessionFactory.getCurrentSession().createQuery("from User").list();
+
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        if (users == null || users.isEmpty()){
+            Assert.fail();
+            return;
+        }
+
+        User userToGet = users.get(0);
+        int userId = userToGet.getId();
+
+        user.setUsername("kees");
+        user.setPassword("Kees123!");
+        user.setRole(Role.Administrator);
+
+        this.userHibernateContext.update(user);
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        users = (ArrayList<User>) sessionFactory.getCurrentSession().createQuery("from User").list();
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        for (User userFromCollection : users) {
+            if (userFromCollection.getId() != userId){
+                continue;
+            }
+
+            if (!userFromCollection.getUsername().equals("kees")){
+                Assert.fail();
+                return;
+            }
+
+            if (!userFromCollection.getPassword().equals("Kees123!")){
+                Assert.fail();
+                return;
+            }
+
+            if (userFromCollection.getRole() != Role.Administrator){
+                Assert.fail();
+                return;
+            }
+
+            Assert.assertTrue(true);
+            return;
+        }
+
+        Assert.fail();
+    }
 }
