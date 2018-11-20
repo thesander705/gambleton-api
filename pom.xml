@@ -60,6 +60,9 @@
                 <sonar.password>
                     MBSdB123!
                 </sonar.password>
+                <sonar.language>
+                    java
+                </sonar.language>
             </properties>
         </profile>
     </profiles>
