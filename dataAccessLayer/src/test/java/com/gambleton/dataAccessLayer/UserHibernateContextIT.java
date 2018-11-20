@@ -72,4 +72,26 @@ public class UserHibernateContextIT {
         Assert.fail();
     }
 
+    @Test
+    public void getByAuthTokenGetsAUserByAuthtoken(){
+        String authtoken = "1234567890";
+
+        User user = new User();
+        user.setAuthToken(authtoken);
+        user.setRole(Role.Gambler);
+        user.setUsername("test");
+        user.setPassword("Test123!");
+        sessionFactory.getCurrentSession().beginTransaction();
+        sessionFactory.getCurrentSession().save(user);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        User userToTest = userHibernateContext.getByAuthToken(authtoken);
+
+        if (userToTest.getAuthToken().equals(authtoken)){
+            Assert.assertTrue(true);
+            return;
+        }
+
+        Assert.fail();
+    }
 }
