@@ -9,6 +9,9 @@ import org.junit.Test;
 import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.ArgumentCaptor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -198,5 +201,45 @@ public class UserDefaultRepositoryTests {
         UserRepository userRepository = new UserDefaultRepository(userContext);
         User userFromRepository = userRepository.get(2);
         assertNull(userFromRepository);
+    }
+
+    @Test
+    public void getAllReturnsAllUsers() {
+        UserContext userContext = mock(UserContext.class);
+
+        User userFromContext1 = new User();
+        userFromContext1.setId(1);
+        userFromContext1.setUsername("test");
+        userFromContext1.setPassword(BCrypt.hashpw("Test123!", BCrypt.gensalt(8)));
+        userFromContext1.setRole(Role.Gambler);
+        userFromContext1.setAuthToken("12345sdfghxcvbn");
+
+        User userFromContext2 = new User();
+        userFromContext2.setId(2);
+        userFromContext2.setUsername("test2");
+        userFromContext2.setPassword(BCrypt.hashpw("Test123!2", BCrypt.gensalt(8)));
+        userFromContext2.setRole(Role.Gambler);
+        userFromContext2.setAuthToken("12345sdfghxcvbn2");
+
+        ArrayList<User> allUsers = new ArrayList<User>();
+        allUsers.add(userFromContext1);
+        allUsers.add(userFromContext2);
+
+        when(userContext.getAll()).thenReturn(allUsers);
+
+        UserRepository userRepository = new UserDefaultRepository(userContext);
+        List<User> allUsersToTest = userRepository.getAll();
+        Assert.assertEquals(2, allUsersToTest.size());
+    }
+
+    @Test
+    public void getAllReturnsEmptyListWhenDataIsNull() {
+        UserContext userContext = mock(UserContext.class);
+
+        when(userContext.getAll()).thenReturn(null);
+
+        UserRepository userRepository = new UserDefaultRepository(userContext);
+        List<User> allUsersToTest = userRepository.getAll();
+        Assert.assertNotNull(allUsersToTest);
     }
 }

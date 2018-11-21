@@ -5,6 +5,7 @@ import com.gambleton.models.User;
 import com.gambleton.repository.abstraction.UserRepository;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDefaultRepository implements UserRepository {
@@ -54,7 +55,13 @@ public class UserDefaultRepository implements UserRepository {
 
     @Override
     public List<User> getAll() {
-        return userContext.getAll();
+        List<User> users = userContext.getAll();
+
+        if (users == null){
+            users = new ArrayList<>();
+        }
+        
+        return users;
     }
 
     @Override
