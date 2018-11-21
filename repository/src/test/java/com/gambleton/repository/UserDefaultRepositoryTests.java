@@ -12,9 +12,9 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.ArgumentCaptor;
 
 public class UserDefaultRepositoryTests {
-
+    
     @Test
-    public void getByCredentials_HashesPasswordBcryptEightRounds() {
+    public void getByCredentialsHashesPasswordBcryptEightRounds() {
         UserContext userContext = mock(UserContext.class);
 
         String password = "Password123!";
@@ -33,7 +33,7 @@ public class UserDefaultRepositoryTests {
     }
 
     @Test
-    public void create_CheckIfPasswordGestHashed() {
+    public void createCheckIfPasswordGestHashed() {
         UserContext userContext = mock(UserContext.class);
         String password = "Password123!";
 
