@@ -60,7 +60,7 @@ public class UserDefaultRepository implements UserRepository {
         if (users == null){
             users = new ArrayList<>();
         }
-        
+
         return users;
     }
 

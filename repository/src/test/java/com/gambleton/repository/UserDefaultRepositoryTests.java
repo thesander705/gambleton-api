@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
 
 public class UserDefaultRepositoryTests {
     @Test
-    public void getByCredentialsReturnsNullWhenUserIsNotFound(){
+    public void getByCredentialsReturnsNullWhenUserIsNotFound() {
         UserContext userContext = mock(UserContext.class);
         when(userContext.getByUsername(anyString())).thenReturn(null);
 
@@ -28,7 +28,7 @@ public class UserDefaultRepositoryTests {
     }
 
     @Test
-    public void getByCredentialsReturnsNullWhenHashFails(){
+    public void getByCredentialsReturnsNullWhenHashFails() {
         UserContext userContext = mock(UserContext.class);
 
         String password = "Password123!";
@@ -48,7 +48,7 @@ public class UserDefaultRepositoryTests {
     }
 
     @Test
-    public void getByCredentialsReturnsNullWhenPasswordIsWrong(){
+    public void getByCredentialsReturnsNullWhenPasswordIsWrong() {
         UserContext userContext = mock(UserContext.class);
 
         String password = "Password123!";
@@ -125,9 +125,9 @@ public class UserDefaultRepositoryTests {
 
         verify(userContext).create(argument.capture());
         boolean passwordHashed = false;
-        try{
+        try {
             passwordHashed = BCrypt.checkpw(password, argument.getValue().getPassword());
-        }catch(Exception ignored){
+        } catch (Exception ignored) {
 
         }
 
@@ -135,7 +135,7 @@ public class UserDefaultRepositoryTests {
     }
 
     @Test
-    public void getByAuthTokenReturnsUserWhenCorrectAuthToken(){
+    public void getByAuthTokenReturnsUserWhenCorrectAuthToken() {
         UserContext userContext = mock(UserContext.class);
         String authToken = "12345sdfghxcvbn";
 
@@ -154,7 +154,7 @@ public class UserDefaultRepositoryTests {
     }
 
     @Test
-    public void getByAuthTokenReturnsNullWhenIncorrectAuthToken(){
+    public void getByAuthTokenReturnsNullWhenIncorrectAuthToken() {
         UserContext userContext = mock(UserContext.class);
         String authToken = "12345sdfghxcvbn";
 
@@ -241,5 +241,43 @@ public class UserDefaultRepositoryTests {
         UserRepository userRepository = new UserDefaultRepository(userContext);
         List<User> allUsersToTest = userRepository.getAll();
         Assert.assertNotNull(allUsersToTest);
+    }
+
+    @Test
+    public void updateUpdatesAUser() {
+        UserContext userContext = mock(UserContext.class);
+
+        User userToUpdate = new User();
+        userToUpdate.setId(1);
+        userToUpdate.setRole(Role.Gambler);
+        userToUpdate.setUsername("Test");
+        userToUpdate.setPassword("Password123!");
+        userToUpdate.setAuthToken("1234567asdsvsd");
+
+        ArgumentCaptor<User> argument = ArgumentCaptor.forClass(User.class);
+        doNothing().when(userContext).update(any(User.class));
+
+        UserRepository userRepository = new UserDefaultRepository(userContext);
+        userRepository.update(userToUpdate);
+        verify(userContext).update(argument.capture());
+        Assert.assertEquals(argument.getValue().getRole(), userToUpdate.getRole());
+        Assert.assertEquals(argument.getValue().getAuthToken(), userToUpdate.getAuthToken());
+        Assert.assertEquals(argument.getValue().getUsername(), userToUpdate.getUsername());
+        Assert.assertEquals(argument.getValue().getId(), userToUpdate.getId());
+    }
+
+    @Test
+    public void deleteDeletesAUser() {
+        UserContext userContext = mock(UserContext.class);
+
+        int userId = 1;
+
+        ArgumentCaptor<Integer> argument = ArgumentCaptor.forClass(int.class);
+        doNothing().when(userContext).delete(anyInt());
+
+        UserRepository userRepository = new UserDefaultRepository(userContext);
+        userRepository.delete(userId);
+        verify(userContext).delete(argument.capture());
+        Assert.assertEquals(argument.getValue().intValue(), userId);
     }
 }
