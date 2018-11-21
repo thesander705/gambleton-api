@@ -7,6 +7,7 @@ import com.gambleton.dataAccessLayer.abstraction.UserContext;
 import com.gambleton.models.Role;
 import com.gambleton.models.User;
 import com.gambleton.repository.abstraction.UserRepository;
+import org.junit.Assert;
 import org.junit.Test;
 import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.ArgumentCaptor;
@@ -83,6 +84,27 @@ public class UserDefaultRepositoryTests {
     }
 
     @Test
+    public void createCheckIfUserGetsCreated() {
+        UserContext userContext = mock(UserContext.class);
+
+        User userToCreate = new User();
+        userToCreate.setRole(Role.Gambler);
+        userToCreate.setUsername("Test");
+        userToCreate.setPassword("Password123!");
+        userToCreate.setAuthToken("1234567asdsvsd");
+
+        ArgumentCaptor<User> argument = ArgumentCaptor.forClass(User.class);
+
+        UserRepository userRepository = new UserDefaultRepository(userContext);
+        userRepository.create(userToCreate);
+
+        verify(userContext).create(argument.capture());
+
+        Assert.assertNotNull(argument.getValue());
+    }
+
+
+    @Test
     public void createCheckIfPasswordGestHashed() {
         UserContext userContext = mock(UserContext.class);
         String password = "Password123!";
@@ -107,5 +129,36 @@ public class UserDefaultRepositoryTests {
         }
 
         assertTrue(passwordHashed);
+    }
+
+    @Test
+    public void getByAuthTokenReturnsUserWhenCorrectAuthToken(){
+        UserContext userContext = mock(UserContext.class);
+        String authToken = "12345sdfghxcvbn";
+
+        User userFromContext = new User();
+        userFromContext.setId(1);
+        userFromContext.setUsername("test");
+        userFromContext.setPassword(BCrypt.hashpw("Test123!", BCrypt.gensalt(8)));
+        userFromContext.setRole(Role.Gambler);
+        userFromContext.setAuthToken(authToken);
+
+        when(userContext.getByAuthToken(authToken)).thenReturn(userFromContext);
+
+        UserRepository userRepository = new UserDefaultRepository(userContext);
+        User userFromRepository = userRepository.getByAuthToken(authToken);
+        assertNotNull(userFromRepository);
+    }
+
+    @Test
+    public void getByAuthTokenReturnsNullWhenIncorrectAuthToken(){
+        UserContext userContext = mock(UserContext.class);
+        String authToken = "12345sdfghxcvbn";
+
+        when(userContext.getByAuthToken(anyString())).thenReturn(null);
+
+        UserRepository userRepository = new UserDefaultRepository(userContext);
+        User userFromRepository = userRepository.getByAuthToken(authToken);
+        assertNull(userFromRepository);
     }
 }
