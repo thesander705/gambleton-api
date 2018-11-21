@@ -12,7 +12,57 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.ArgumentCaptor;
 
 public class UserDefaultRepositoryTests {
-    
+    @Test
+    public void getByCredentialsReturnsNullWhenUserIsNotFound(){
+        UserContext userContext = mock(UserContext.class);
+        when(userContext.getByUsername(anyString())).thenReturn(null);
+
+        UserRepository userRepository = new UserDefaultRepository(userContext);
+        User userFromRepository = userRepository.getByCredentials("test", "Test123!");
+        assertNull(userFromRepository);
+
+    }
+
+    @Test
+    public void getByCredentialsReturnsNullWhenHashFails(){
+        UserContext userContext = mock(UserContext.class);
+
+        String password = "Password123!";
+
+        User userFromContext = new User();
+        userFromContext.setId(1);
+        userFromContext.setUsername("test");
+        userFromContext.setPassword(password);
+        userFromContext.setRole(Role.Gambler);
+
+        when(userContext.getByUsername("test")).thenReturn(userFromContext);
+
+        UserRepository userRepository = new UserDefaultRepository(userContext);
+        User userFromRepository = userRepository.getByCredentials("test", password);
+        assertNull(userFromRepository);
+
+    }
+
+    @Test
+    public void getByCredentialsReturnsNullWhenPasswordIsWrong(){
+        UserContext userContext = mock(UserContext.class);
+
+        String password = "Password123!";
+
+        User userFromContext = new User();
+        userFromContext.setId(1);
+        userFromContext.setUsername("test");
+        userFromContext.setPassword(BCrypt.hashpw(password, BCrypt.gensalt(8)));
+        userFromContext.setRole(Role.Gambler);
+
+        when(userContext.getByUsername("test")).thenReturn(userFromContext);
+
+        UserRepository userRepository = new UserDefaultRepository(userContext);
+        User userFromRepository = userRepository.getByCredentials("test", "Kaas123!");
+        assertNull(userFromRepository);
+
+    }
+
     @Test
     public void getByCredentialsHashesPasswordBcryptEightRounds() {
         UserContext userContext = mock(UserContext.class);

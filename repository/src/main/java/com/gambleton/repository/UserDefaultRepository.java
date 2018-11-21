@@ -23,14 +23,16 @@ public class UserDefaultRepository implements UserRepository {
         }
 
         try {
-            if (BCrypt.checkpw(password, userFromUserContext.getPassword())) {
-                return userFromUserContext;
-            }
+            BCrypt.checkpw(password, userFromUserContext.getPassword());
         } catch (Exception e) {
             return null;
         }
 
-        return null;
+        if (!BCrypt.checkpw(password, userFromUserContext.getPassword())) {
+            return null;
+        }
+
+        return userFromUserContext;
     }
 
     @Override
