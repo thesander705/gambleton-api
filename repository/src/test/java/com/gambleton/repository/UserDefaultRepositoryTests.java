@@ -1,8 +1,5 @@
 package com.gambleton.repository;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
 import com.gambleton.dataAccessLayer.abstraction.UserContext;
 import com.gambleton.models.Role;
 import com.gambleton.models.User;
@@ -11,6 +8,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.ArgumentCaptor;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class UserDefaultRepositoryTests {
     @Test
@@ -159,6 +159,44 @@ public class UserDefaultRepositoryTests {
 
         UserRepository userRepository = new UserDefaultRepository(userContext);
         User userFromRepository = userRepository.getByAuthToken(authToken);
+        assertNull(userFromRepository);
+    }
+
+    @Test
+    public void getReturnsUserWhenCorrectId() {
+        UserContext userContext = mock(UserContext.class);
+        int id = 1;
+
+        User userFromContext = new User();
+        userFromContext.setId(id);
+        userFromContext.setUsername("test");
+        userFromContext.setPassword(BCrypt.hashpw("Test123!", BCrypt.gensalt(8)));
+        userFromContext.setRole(Role.Gambler);
+        userFromContext.setAuthToken("12345sdfghxcvbn");
+
+        when(userContext.get(id)).thenReturn(userFromContext);
+
+        UserRepository userRepository = new UserDefaultRepository(userContext);
+        User userFromRepository = userRepository.get(id);
+        assertNotNull(userFromRepository);
+    }
+
+    @Test
+    public void getReturnsNullWhenIncorrectId() {
+        UserContext userContext = mock(UserContext.class);
+        int id = 1;
+
+        User userFromContext = new User();
+        userFromContext.setId(id);
+        userFromContext.setUsername("test");
+        userFromContext.setPassword(BCrypt.hashpw("Test123!", BCrypt.gensalt(8)));
+        userFromContext.setRole(Role.Gambler);
+        userFromContext.setAuthToken("12345sdfghxcvbn");
+
+        when(userContext.get(id)).thenReturn(userFromContext);
+
+        UserRepository userRepository = new UserDefaultRepository(userContext);
+        User userFromRepository = userRepository.get(2);
         assertNull(userFromRepository);
     }
 }
