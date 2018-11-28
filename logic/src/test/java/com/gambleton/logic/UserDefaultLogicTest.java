@@ -6,6 +6,8 @@ import com.gambleton.repository.abstraction.UserRepository;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -52,6 +54,16 @@ public class UserDefaultLogicTest {
         User userFromLogic = userLogic.getByAuthToken(authToken);
 
         Assert.assertEquals("", userFromLogic.getPassword());
+    }
+
+    @Test
+    public void getByCredentialsReturnsNullWhenUserIsNotFound() {
+        UserRepository userRepository = mock(UserRepository.class);
+        when(userRepository.getByCredentials(anyString(), anyString())).thenReturn(null);
+
+        UserDefaultLogic userDefaultLogic = new UserDefaultLogic(userRepository);
+        User userFromLogic = userDefaultLogic.getByCredentials("test", "Test123!");
+        assertNull(userFromLogic);
     }
 
 }
