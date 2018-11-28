@@ -1,11 +1,13 @@
 package com.gambleton.logic;
 
+import com.gambleton.logic.abstraction.UserLogic;
 import com.gambleton.models.Role;
 import com.gambleton.models.User;
 import com.gambleton.repository.abstraction.UserRepository;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -74,6 +76,25 @@ public class UserDefaultLogicTest {
         UserDefaultLogic userDefaultLogic = new UserDefaultLogic(userRepository);
         User userFromLogic = userDefaultLogic.getByAuthToken("qwergbsa37242jmsakd");
         assertNull(userFromLogic);
+    }
+
+    @Test
+    public void getByAuthTokenReturnsUserWhenCorrectAuthToken() {
+        UserRepository userRepository = mock(UserRepository.class);
+        String authToken = "12345sdfghxcvbn";
+
+        User userFromRepository = new User();
+        userFromRepository.setId(1);
+        userFromRepository.setUsername("test");
+        userFromRepository.setPassword("Test123!");
+        userFromRepository.setRole(Role.Gambler);
+        userFromRepository.setAuthToken(authToken);
+
+        when(userRepository.getByAuthToken(authToken)).thenReturn(userFromRepository);
+
+        UserLogic userLogic = new UserDefaultLogic(userRepository);
+        User userFromLogic = userLogic.getByAuthToken(authToken);
+        assertNotNull(userFromLogic);
     }
 
 }
