@@ -8,8 +8,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.*;
 
 public class GameDefaultRepositoryTest {
     @Test
@@ -28,5 +28,22 @@ public class GameDefaultRepositoryTest {
         verify(gameContext).create(argument.capture());
 
         Assert.assertNotNull(argument.getValue());
+    }
+
+    @Test
+    public void getReturnsGameWhenCorrectId() {
+        GameContext gameContext = mock(GameContext.class);
+        int id = 1;
+
+        Game gameFromContext = new Game();
+        gameFromContext.setId(id);
+        gameFromContext.setName("Test game");
+        gameFromContext.setDescription("testGame");
+
+        when(gameContext.get(id)).thenReturn(gameFromContext);
+
+        GameRepository gameRepository = new GameDefaultRepository(gameContext);
+        Game gameFromRepository = gameRepository.get(id);
+        assertNotNull(gameFromRepository);
     }
 }
