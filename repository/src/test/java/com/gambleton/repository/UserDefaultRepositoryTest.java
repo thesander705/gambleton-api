@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class UserDefaultRepositoryTests {
+public class UserDefaultRepositoryTest {
     @Test
     public void getByCredentialsReturnsNullWhenUserIsNotFound() {
         UserContext userContext = mock(UserContext.class);
