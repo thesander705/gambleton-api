@@ -106,4 +106,19 @@ public class GameDefaultRepositoryTest {
         Assert.assertEquals(argument.getValue().getDescription(), gameToUpdate.getDescription());
         Assert.assertEquals(argument.getValue().getId(), gameToUpdate.getId());
     }
+
+    @Test
+    public void deleteDeletesAGame() {
+        GameContext gameContext = mock(GameContext.class);
+
+        int gameId = 1;
+
+        ArgumentCaptor<Integer> argument = ArgumentCaptor.forClass(int.class);
+        doNothing().when(gameContext).delete(anyInt());
+
+        GameRepository gameRepository = new GameDefaultRepository(gameContext);
+        gameRepository.delete(gameId);
+        verify(gameContext).delete(argument.capture());
+        Assert.assertEquals(argument.getValue().intValue(), gameId);
+    }
 }
