@@ -66,4 +66,14 @@ public class UserDefaultLogicTest {
         assertNull(userFromLogic);
     }
 
+    @Test
+    public void getByAuthTokenReturnsNullWhenUserIsNotFound() {
+        UserRepository userRepository = mock(UserRepository.class);
+        when(userRepository.getByAuthToken(anyString())).thenReturn(null);
+
+        UserDefaultLogic userDefaultLogic = new UserDefaultLogic(userRepository);
+        User userFromLogic = userDefaultLogic.getByAuthToken("qwergbsa37242jmsakd");
+        assertNull(userFromLogic);
+    }
+
 }
