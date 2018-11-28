@@ -85,4 +85,25 @@ public class GameDefaultRepositoryTest {
         List<Game> allGamesToTest = gameRepository.getAll();
         Assert.assertNotNull(allGamesToTest);
     }
+
+    @Test
+    public void updateUpdatesAGame() {
+        GameContext gameContext = mock(GameContext.class);
+
+        Game gameToUpdate = new Game();
+        gameToUpdate.setId(1);
+        gameToUpdate.setName("Test game");
+        gameToUpdate.setDescription("testGame");
+
+
+        ArgumentCaptor<Game> argument = ArgumentCaptor.forClass(Game.class);
+        doNothing().when(gameContext).update(any(Game.class));
+
+        GameRepository gameRepository = new GameDefaultRepository(gameContext);
+        gameRepository.update(gameToUpdate);
+        verify(gameContext).update(argument.capture());
+        Assert.assertEquals(argument.getValue().getName(), gameToUpdate.getName());
+        Assert.assertEquals(argument.getValue().getDescription(), gameToUpdate.getDescription());
+        Assert.assertEquals(argument.getValue().getId(), gameToUpdate.getId());
+    }
 }
