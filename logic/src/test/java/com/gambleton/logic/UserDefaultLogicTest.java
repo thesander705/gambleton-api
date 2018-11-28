@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 public class UserDefaultLogicTest {
 
     @Test
-    public void getByCredentials_returnsEmptyPassword(){
+    public void getByCredentials_returnsEmptyPassword() {
         String username = "test";
         String password = "Test123!";
 
@@ -29,7 +29,7 @@ public class UserDefaultLogicTest {
         userFromMock.setUsername(password);
         userFromMock.setId(1);
 
-        when(userRepository.getByCredentials(username,password)).thenReturn(userFromMock);
+        when(userRepository.getByCredentials(username, password)).thenReturn(userFromMock);
 
         UserDefaultLogic userLogic = new UserDefaultLogic(userRepository);
         User userFromLogic = userLogic.getByCredentials(username, password);
@@ -38,7 +38,7 @@ public class UserDefaultLogicTest {
     }
 
     @Test
-    public void getByAuthToken_returnsEmptyPassword(){
+    public void getByAuthToken_returnsEmptyPassword() {
         String authToken = "qwergbsa37242jmsakd";
 
         UserRepository userRepository = mock(UserRepository.class);
@@ -79,6 +79,26 @@ public class UserDefaultLogicTest {
     }
 
     @Test
+    public void getByCredentialsReturnsUserWhenCorrectAuthToken() {
+        UserRepository userRepository = mock(UserRepository.class);
+        String username = "test";
+        String password = "Passoword123!";
+
+        User userFromRepository = new User();
+        userFromRepository.setId(1);
+        userFromRepository.setUsername(username);
+        userFromRepository.setPassword(password);
+        userFromRepository.setRole(Role.Gambler);
+        userFromRepository.setAuthToken("12345sdfghxcvbn");
+
+        when(userRepository.getByCredentials(username, password)).thenReturn(userFromRepository);
+
+        UserLogic userLogic = new UserDefaultLogic(userRepository);
+        User userFromLogic = userLogic.getByCredentials(username, password);
+        assertNotNull(userFromLogic);
+    }
+
+    @Test
     public void getByAuthTokenReturnsUserWhenCorrectAuthToken() {
         UserRepository userRepository = mock(UserRepository.class);
         String authToken = "12345sdfghxcvbn";
@@ -96,5 +116,4 @@ public class UserDefaultLogicTest {
         User userFromLogic = userLogic.getByAuthToken(authToken);
         assertNotNull(userFromLogic);
     }
-
 }
