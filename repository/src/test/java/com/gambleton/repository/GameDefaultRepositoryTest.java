@@ -74,4 +74,15 @@ public class GameDefaultRepositoryTest {
         List<Game> allGamesToTest = gameRepository.getAll();
         Assert.assertEquals(2, allGamesToTest.size());
     }
+
+    @Test
+    public void getAllReturnsEmptyListWhenDataIsNull() {
+        GameContext gameContext = mock(GameContext.class);
+
+        when(gameContext.getAll()).thenReturn(null);
+
+        GameRepository gameRepository = new GameDefaultRepository(gameContext);
+        List<Game> allGamesToTest = gameRepository.getAll();
+        Assert.assertNotNull(allGamesToTest);
+    }
 }
