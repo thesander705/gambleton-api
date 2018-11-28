@@ -33,4 +33,25 @@ public class UserDefaultLogicTest {
         Assert.assertEquals("", userFromLogic.getPassword());
     }
 
+    @Test
+    public void getByAuthToken_returnsEmptyPassword(){
+        String authToken = "qwergbsa37242jmsakd";
+
+        UserRepository userRepository = mock(UserRepository.class);
+
+        User userFromMock = new User();
+        userFromMock.setRole(Role.Gambler);
+        userFromMock.setPassword("Test");
+        userFromMock.setUsername("Test123!");
+        userFromMock.setAuthToken(authToken);
+        userFromMock.setId(1);
+
+        when(userRepository.getByAuthToken(authToken)).thenReturn(userFromMock);
+
+        UserDefaultLogic userLogic = new UserDefaultLogic(userRepository);
+        User userFromLogic = userLogic.getByAuthToken(authToken);
+
+        Assert.assertEquals("", userFromLogic.getPassword());
+    }
+
 }
