@@ -4,6 +4,7 @@ import com.gambleton.models.Game;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +26,11 @@ public class GameHibernateContextIT {
         }
 
         gameHibernateContext = new GameHibernateContext(this.sessionFactory);
+    }
+
+    @After
+    public void afterEachTest() {
+        this.sessionFactory.close();
     }
 
     @Test
