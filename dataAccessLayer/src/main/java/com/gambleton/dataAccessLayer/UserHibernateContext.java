@@ -14,8 +14,12 @@ public class UserHibernateContext implements UserContext {
     private SessionFactory sessionFactory;
 
     public UserHibernateContext() {
+        this("hibernate.cfg.xml");
+    }
+
+    UserHibernateContext(String filePath){
         try {
-            sessionFactory = new Configuration().configure().buildSessionFactory();
+            sessionFactory = new Configuration().configure(filePath).buildSessionFactory();
         } catch (Throwable ex) {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
