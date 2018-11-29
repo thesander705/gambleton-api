@@ -93,6 +93,12 @@ public class UserHibernateContextIT {
     }
 
     @Test
+    public void getByUsernameReturnsNullWhenUserNotFound(){
+        User userToTest = userHibernateContext.getByUsername("s");
+        Assert.assertNull(userToTest);
+    }
+
+    @Test
     public void getByAuthTokenGetsAUserByAuthtoken(){
         String authtoken = "1234567890";
 
@@ -113,6 +119,12 @@ public class UserHibernateContextIT {
         }
 
         Assert.fail();
+    }
+
+    @Test
+    public void getByAuthTokenReturnsNullWhenUserNotFound(){
+        User userToTest = userHibernateContext.getByAuthToken("sadasdasdsa");
+        Assert.assertNull(userToTest);
     }
 
     @Test
