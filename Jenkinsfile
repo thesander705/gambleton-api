@@ -7,19 +7,19 @@ pipeline {
         timeout(time: 5, unit: 'MINUTES')
     }
     stages {
-        stage('Installing') {
+        stage('Unit and integration tests') {
             steps {
-                sh 'mvn jacoco:prepare-agent install jacoco:report'
+                sh ' mvn jacoco:prepare-agent test failsafe:integration-test jacoco:report'
             }
         }
-        stage('sonarqube') {
+        stage('Code style check') {
             steps{
                 sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar'
             }
         }
-        stage('Running integration tests') {
+        stage('Installing') {
             steps{
-                sh 'mvn failsafe:integration-test'
+                sh 'mvn install'
             }
         }
     }
