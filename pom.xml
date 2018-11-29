@@ -64,7 +64,7 @@
                     java
                 </sonar.language>
                 <sonar.coverage.exclusions>
-                    **/dataAccessLayer/**
+                    **/dataAccessLayer/**,**/models/**,**/factory/**,**/presentation/**
                 </sonar.coverage.exclusions>
             </properties>
         </profile>
