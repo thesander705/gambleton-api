@@ -40,6 +40,11 @@ public class GameHibernateContextIT {
     }
 
     @Test
+    public void constructorThrowsNotAnExceptionWhenEverythingIsOkay(){
+        this.gameHibernateContext = new GameHibernateContext("hibernate-test.cfg.xml");
+    }
+
+    @Test
     public void createCreatesAUser(){
         Game game = new Game();
         game.setName("Test game");
