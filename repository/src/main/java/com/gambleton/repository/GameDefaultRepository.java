@@ -4,6 +4,7 @@ import com.gambleton.dataAccessLayer.abstraction.GameContext;
 import com.gambleton.models.Game;
 import com.gambleton.repository.abstraction.GameRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameDefaultRepository implements GameRepository {
@@ -25,7 +26,13 @@ public class GameDefaultRepository implements GameRepository {
 
     @Override
     public List<Game> getAll() {
-        return gameContext.getAll();
+        List<Game> games =  gameContext.getAll();
+
+        if (games == null){
+            games = new ArrayList<Game>();
+        }
+
+        return games;
     }
 
     @Override

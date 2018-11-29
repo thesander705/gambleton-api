@@ -24,6 +24,11 @@ public class UserDefaultLogic implements UserLogic {
 
     @Override
     public User getByAuthToken(String authToken) {
-        return this.userRepository.getByAuthToken(authToken);
+        User user = userRepository.getByAuthToken(authToken);
+        if(user == null){
+            return null;
+        }
+        user.setPassword("");
+        return user;
     }
 }
