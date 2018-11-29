@@ -28,6 +28,12 @@ public class UserHibernateContextIT {
         userHibernateContext = new UserHibernateContext(sessionFactory);
     }
 
+
+    @Test
+    public void constructorThrowsNotAnExceptionWhenEverythingIsOkay(){
+        this.userHibernateContext = new UserHibernateContext("hibernate-test.cfg.xml");
+    }
+
     @Test
     public void parameterlessConstructorWorks(){
         try{
