@@ -4,18 +4,23 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="com.gambleton.models.Game" table="games">
+    <class name="com.gambleton.models.Match" table="matches">
 
         <meta attribute="class-description">
-            This class contains the game details.
+            This class contains the match details.
         </meta>
 
         <id name="id" type="int">
             <generator class="native"/>
         </id>
 
-        <property name="name" type="string"/>
+        <property name="title" type="string"/>
         <property name="description" type="string"/>
+        <set name="betOptions"
+             inverse="true" lazy="true" fetch="join">
+            <key />
+            <one-to-many class="com.gambleton.models.BetOption"/>
+        </set>
 
     </class>
 </hibernate-mapping>

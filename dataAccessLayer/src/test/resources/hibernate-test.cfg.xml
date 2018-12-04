@@ -5,7 +5,7 @@
     <session-factory>
 
         <property name = "hibernate.dialect">
-            org.hibernate.dialect.MySQL5Dialect
+            org.hibernate.dialect.MySQL55Dialect
         </property>
 
         <property name = "hibernate.connection.driver_class">
@@ -39,6 +39,9 @@
         <!-- List of XML mapping files -->
         <mapping resource = "User.hbm.xml"/>
         <mapping resource = "Game.hbm.xml"/>
+        <mapping resource = "Match.hbm.xml"/>
+        <mapping resource = "Competitor.hbm.xml"/>
+        <mapping resource = "BetOption.hbm.xml"/>
 
     </session-factory>
 
