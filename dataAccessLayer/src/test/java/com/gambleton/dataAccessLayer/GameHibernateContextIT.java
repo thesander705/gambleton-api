@@ -51,7 +51,7 @@ public class GameHibernateContextIT {
     }
 
     @Test
-    public void createCreatesAUser(){
+    public void createCreatesAGame(){
         Game game = new Game();
         game.setName("Test game");
         game.setDescription("This is a test game");
