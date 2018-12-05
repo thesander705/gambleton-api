@@ -70,19 +70,141 @@ public class MatchHibernateContextIT {
 
         sessionFactory.getCurrentSession().beginTransaction();
 
-        ArrayList<Match> matchs = (ArrayList<Match>) this.sessionFactory.getCurrentSession().createQuery("from Match").list();
+        ArrayList<Match> matches = (ArrayList<Match>) this.sessionFactory.getCurrentSession().createQuery("from Match").list();
 
         sessionFactory.getCurrentSession().getTransaction().commit();
 
-        if (matchs == null || matchs.isEmpty()){
+        if (matches == null || matches.isEmpty()){
             Assert.fail();
             return;
         }
 
-        int idToGet = matchs.get(0).getId();
+        int idToGet = matches.get(0).getId();
         Match matchGotten = matchHibernateContext.get(idToGet);
 
         if (matchGotten != null && matchGotten.getId() == idToGet){
+            Assert.assertTrue(true);
+            return;
+        }
+
+        Assert.fail();
+    }
+
+
+    @Test
+    public void getAllGetsAllMatches() {
+        Match match = new Match();
+        match.setTitle("Test match");
+        match.setDescription("This is a test match");
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        sessionFactory.getCurrentSession().save(match);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        List<Match> matches = matchHibernateContext.getAll();
+
+        if (matches == null){
+            Assert.fail();
+            return;
+        }
+
+        for (Match userFromCollection : matches) {
+            if (userFromCollection.getTitle().equals("Test match")){
+                Assert.assertTrue(true);
+                return;
+            }
+        }
+
+        Assert.fail();
+    }
+
+    @Test
+    public void updateUpdatesAMatch(){
+        Match match = new Match();
+        match.setTitle("Test match");
+        match.setDescription("This is a test match");
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        sessionFactory.getCurrentSession().save(match);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        sessionFactory.getCurrentSession().beginTransaction();
+
+        ArrayList<Match> matches = (ArrayList<Match>) sessionFactory.getCurrentSession().createQuery("from Match ").list();
+
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        if (matches == null || matches.isEmpty()){
+            Assert.fail();
+            return;
+        }
+
+        Match matchToGet = matches.get(0);
+        int matchId = matchToGet.getId();
+
+        match.setTitle("New name");
+        match.setDescription("New description");
+
+        this.matchHibernateContext.update(match);
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        matches = (ArrayList<Match>) sessionFactory.getCurrentSession().createQuery("from Match ").list();
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        for (Match matchFromCollection : matches) {
+            if (matchFromCollection.getId() != matchId){
+                continue;
+            }
+
+            if (!matchFromCollection.getTitle().equals("New name")){
+                Assert.fail();
+                return;
+            }
+
+            if (!matchFromCollection.getDescription().equals("New description")){
+                Assert.fail();
+                return;
+            }
+
+            Assert.assertTrue(true);
+            return;
+        }
+
+        Assert.fail();
+    }
+
+    @Test
+    public void deleteDeletesMatch(){
+        Match match = new Match();
+        match.setTitle("Test match");
+        match.setDescription("This is a test match");
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        sessionFactory.getCurrentSession().save(match);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        ArrayList<Match> matches = (ArrayList<Match>) sessionFactory.getCurrentSession().createQuery("from Match").list();
+
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        if (matches == null || matches.isEmpty()){
+            Assert.fail();
+            return;
+        }
+
+        Match matchToGet = matches.get(0);
+        int matchId = matchToGet.getId();
+
+        this.matchHibernateContext.delete(matchId);
+
+        sessionFactory.getCurrentSession().beginTransaction();
+
+        matches = (ArrayList<Match>) sessionFactory.getCurrentSession().createQuery("from Match ").list();
+
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        if (matches == null || matches.isEmpty()){
             Assert.assertTrue(true);
             return;
         }
