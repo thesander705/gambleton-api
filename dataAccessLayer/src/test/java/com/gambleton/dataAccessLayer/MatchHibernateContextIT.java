@@ -38,8 +38,8 @@ public class MatchHibernateContextIT {
     @Test
     public void createCreatesAMatch(){
         Match match = new Match();
-        match.setTitle("Test game");
-        match.setDescription("This is a test game");
+        match.setTitle("Test match");
+        match.setDescription("This is a test match");
 
         matchHibernateContext.create(match);
 
@@ -51,6 +51,38 @@ public class MatchHibernateContextIT {
         session.getTransaction().commit();
 
         if (matches != null && !matches.isEmpty()){
+            Assert.assertTrue(true);
+            return;
+        }
+
+        Assert.fail();
+    }
+
+    @Test
+    public void getGetsAMatchById(){
+        Match match = new Match();
+        match.setTitle("Test match");
+        match.setDescription("This is a test match");
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        sessionFactory.getCurrentSession().save(match);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        sessionFactory.getCurrentSession().beginTransaction();
+
+        ArrayList<Match> matchs = (ArrayList<Match>) this.sessionFactory.getCurrentSession().createQuery("from Match").list();
+
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        if (matchs == null || matchs.isEmpty()){
+            Assert.fail();
+            return;
+        }
+
+        int idToGet = matchs.get(0).getId();
+        Match matchGotten = matchHibernateContext.get(idToGet);
+
+        if (matchGotten != null && matchGotten.getId() == idToGet){
             Assert.assertTrue(true);
             return;
         }
