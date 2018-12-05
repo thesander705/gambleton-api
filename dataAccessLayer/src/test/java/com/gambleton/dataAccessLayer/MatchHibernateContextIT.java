@@ -55,11 +55,51 @@ public class MatchHibernateContextIT {
     
     @Test
     public void createCreatesAMatch(){
-        Match match = new Match();
-        match.setTitle("Test match");
-        match.setDescription("This is a test match");
+        Game game = new Game();
+        game.setDescription("Tennis game");
+        game.setName("Tennis");
+        sessionFactory.getCurrentSession().beginTransaction();
+        this.sessionFactory.getCurrentSession().save(game);
+        sessionFactory.getCurrentSession().getTransaction().commit();
 
-        matchHibernateContext.create(match);
+        Competitor competitor1 = new Competitor();
+        competitor1.setDescription("Test competitor");
+        competitor1.setName("Test competitor");
+        competitor1.setGame(game);
+
+        Competitor competitor2 = new Competitor();
+        competitor2.setDescription("Test competitor2");
+        competitor2.setName("Test competitor2");
+        competitor2.setGame(game);
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        this.sessionFactory.getCurrentSession().save(competitor1);
+        this.sessionFactory.getCurrentSession().save(competitor2);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+
+        BetOption betOption1 = new BetOption();
+        betOption1.setPayoutRate(2);
+        betOption1.setCompetitor(competitor1);
+
+        BetOption betOption2 = new BetOption();
+        betOption2.setPayoutRate(1);
+        betOption2.setCompetitor(competitor2);
+
+        Match match = new Match();
+        match.setTitle("name");
+        match.setDescription("description");
+        List<BetOption> betOptions = new ArrayList<>();
+        betOptions.add(betOption1);
+        betOptions.add(betOption2);
+        match.setBetOptions(betOptions);
+
+        try{
+            matchHibernateContext.create(match);
+        }catch (Exception e){
+            Assert.fail();
+            return;
+        }
 
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
