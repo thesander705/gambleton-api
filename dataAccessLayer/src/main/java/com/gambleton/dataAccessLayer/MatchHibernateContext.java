@@ -40,7 +40,15 @@ public class MatchHibernateContext implements MatchContext {
 
     @Override
     public Match get(int id) {
-        return null;
+        Match match;
+        Session session = sessionFactory.getCurrentSession();
+        session.beginTransaction();
+
+        match = session.get(Match.class, id);
+
+        session.getTransaction().commit();
+
+        return match;
     }
 
     @Override
