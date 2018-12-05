@@ -1,6 +1,7 @@
 package com.gambleton.dataAccessLayer;
 
 import com.gambleton.dataAccessLayer.abstraction.MatchContext;
+import com.gambleton.models.BetOption;
 import com.gambleton.models.Match;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -8,6 +9,7 @@ import org.hibernate.cfg.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MatchHibernateContext implements MatchContext {
     private final SessionFactory sessionFactory;
@@ -69,8 +71,16 @@ public class MatchHibernateContext implements MatchContext {
         session.beginTransaction();
 
         Match toUpdate = session.get(Match.class, entity.getId());
+        for (final BetOption betOption : toUpdate.getBetOptions()) {
+            BetOption betOptionFromEntity = entity.getBetOptions().stream().filter(e -> e.getId() == betOption.getId()).collect(Collectors.toList()).get(0);
+            betOption.setPayoutRate(betOptionFromEntity.getPayoutRate());
+            betOption.setCompetitor(betOptionFromEntity.getCompetitor());
+            session.update(betOption);
+        }
+
         toUpdate.setTitle(entity.getTitle());
         toUpdate.setDescription(entity.getDescription());
+        toUpdate.setBetOptions(entity.getBetOptions());
 
         session.update(toUpdate);
         session.getTransaction().commit();
