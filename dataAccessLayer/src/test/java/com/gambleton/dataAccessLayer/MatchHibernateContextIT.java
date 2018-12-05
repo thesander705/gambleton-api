@@ -34,7 +34,24 @@ public class MatchHibernateContextIT {
     public void afterEachTest() {
         this.sessionFactory.close();
     }
+    
+    @Test
+    public void parameterlessConstructorWorks(){
+        try{
+            matchHibernateContext = new MatchHibernateContext();
+        }catch (Exception e){
+            Assert.fail();
+            return;
+        }
 
+        Assert.assertTrue(true);
+    }
+
+    @Test
+    public void constructorThrowsNotAnExceptionWhenEverythingIsOkay(){
+        this.matchHibernateContext = new MatchHibernateContext("hibernate-test.cfg.xml");
+    }
+    
     @Test
     public void createCreatesAMatch(){
         Match match = new Match();
