@@ -16,11 +16,15 @@
 
         <property name="title" type="string"/>
         <property name="description" type="string"/>
-        <set name="betOptions"
-             inverse="true" lazy="true" fetch="join">
-            <key />
-            <one-to-many class="com.gambleton.models.BetOption"/>
-        </set>
+        <list name="betOptions">
+            <key>
+                <column name="match_id" not-null="false">
+
+                </column>
+            </key>
+            <index />
+            <one-to-many class="com.gambleton.models.BetOption" />
+        </list>
 
     </class>
 </hibernate-mapping>

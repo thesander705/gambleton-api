@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MatchHibernateContextIT {
     private SessionFactory sessionFactory;
@@ -37,19 +38,19 @@ public class MatchHibernateContextIT {
     @Test
     public void createCreatesAMatch(){
         Match match = new Match();
-        match.setTitle("Test match");
-        match.setDescription("This is a test match");
+        match.setTitle("Test game");
+        match.setDescription("This is a test game");
 
         matchHibernateContext.create(match);
 
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
 
-        ArrayList<Match> matchs = (ArrayList<Match>) session.createQuery("from Match").list();
+        ArrayList<Match> matches = (ArrayList<Match>) session.createQuery("from Match").list();
 
         session.getTransaction().commit();
 
-        if (matchs != null && !matchs.isEmpty()){
+        if (matches != null && !matches.isEmpty()){
             Assert.assertTrue(true);
             return;
         }

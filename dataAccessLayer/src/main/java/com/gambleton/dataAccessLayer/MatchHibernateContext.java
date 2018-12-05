@@ -2,6 +2,7 @@ package com.gambleton.dataAccessLayer;
 
 import com.gambleton.dataAccessLayer.abstraction.MatchContext;
 import com.gambleton.models.Match;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -29,7 +30,12 @@ public class MatchHibernateContext implements MatchContext {
 
     @Override
     public void create(Match entity) {
+        Session session = sessionFactory.getCurrentSession();
+        session.beginTransaction();
 
+        session.save(entity);
+
+        session.getTransaction().commit();
     }
 
     @Override
