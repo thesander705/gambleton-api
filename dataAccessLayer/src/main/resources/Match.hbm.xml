@@ -16,7 +16,7 @@
 
         <property name="title" type="string"/>
         <property name="description" type="string"/>
-        <list name="betOptions">
+        <list name="betOptions" lazy="false">
             <key>
                 <column name="match_id" not-null="false">
 

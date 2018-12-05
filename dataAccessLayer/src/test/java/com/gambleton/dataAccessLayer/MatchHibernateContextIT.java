@@ -2,6 +2,7 @@ package com.gambleton.dataAccessLayer;
 
 import com.gambleton.models.BetOption;
 import com.gambleton.models.Competitor;
+import com.gambleton.models.Game;
 import com.gambleton.models.Match;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -137,9 +138,50 @@ public class MatchHibernateContextIT {
 
     @Test
     public void updateUpdatesAMatch(){
+
+        Game game = new Game();
+        game.setDescription("Tennis game");
+        game.setName("Tennis");
+        sessionFactory.getCurrentSession().beginTransaction();
+        this.sessionFactory.getCurrentSession().save(game);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        Competitor competitor1 = new Competitor();
+        competitor1.setDescription("Test competitor");
+        competitor1.setName("Test competitor");
+        competitor1.setGame(game);
+
+        Competitor competitor2 = new Competitor();
+        competitor2.setDescription("Test competitor2");
+        competitor2.setName("Test competitor2");
+        competitor2.setGame(game);
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        this.sessionFactory.getCurrentSession().save(competitor1);
+        this.sessionFactory.getCurrentSession().save(competitor2);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        BetOption betOption1 = new BetOption();
+        betOption1.setPayoutRate(2);
+        betOption1.setCompetitor(competitor1);
+
+        BetOption betOption2 = new BetOption();
+        betOption2.setPayoutRate(1);
+        betOption2.setCompetitor(competitor2);
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        this.sessionFactory.getCurrentSession().save(betOption1);
+        this.sessionFactory.getCurrentSession().save(betOption2);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
         Match match = new Match();
-        match.setTitle("Test match");
-        match.setDescription("This is a test match");
+        match.setTitle("name");
+        match.setDescription("description");
+        List<BetOption> betOptions = new ArrayList<>();
+        betOptions.add(betOption1);
+        betOptions.add(betOption2);
+        match.setBetOptions(betOptions);
+
 
         sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().save(match);
@@ -148,6 +190,9 @@ public class MatchHibernateContextIT {
         sessionFactory.getCurrentSession().beginTransaction();
 
         ArrayList<Match> matches = (ArrayList<Match>) sessionFactory.getCurrentSession().createQuery("from Match ").list();
+        Match matchToGet = matches.get(0);
+        int matchId = matchToGet.getId();
+
 
         sessionFactory.getCurrentSession().getTransaction().commit();
 
@@ -156,12 +201,9 @@ public class MatchHibernateContextIT {
             return;
         }
 
-        Match matchToGet = matches.get(0);
-        int matchId = matchToGet.getId();
-
         match.setTitle("New name");
         match.setDescription("New description");
-
+        match.getBetOptions().get(0).setPayoutRate(22);
         this.matchHibernateContext.update(match);
 
         sessionFactory.getCurrentSession().beginTransaction();
@@ -179,6 +221,11 @@ public class MatchHibernateContextIT {
             }
 
             if (!matchFromCollection.getDescription().equals("New description")){
+                Assert.fail();
+                return;
+            }
+
+            if (matchFromCollection.getBetOptions().get(0).getPayoutRate() != 22){
                 Assert.fail();
                 return;
             }
