@@ -34,10 +34,24 @@ public class MatchHibernateContext implements MatchContext {
     @Override
     public void create(Match entity) {
         Session session = sessionFactory.getCurrentSession();
+        List<BetOption> betOptions = entity.getBetOptions();
+        List<BetOption> newBetOptions = new ArrayList<>();
+
         session.beginTransaction();
 
-        session.save(entity);
+        for (BetOption betOption : betOptions) {
+            if (betOption.getId() != 0) {
+                betOption = session.get(BetOption.class, betOption.getId());
+            }else{
+                session.save(betOption);
+            }
+            newBetOptions.add(betOption);
+        }
 
+        entity.getBetOptions().clear();
+        entity.getBetOptions().addAll(newBetOptions);
+
+        session.save(entity);
         session.getTransaction().commit();
     }
 
