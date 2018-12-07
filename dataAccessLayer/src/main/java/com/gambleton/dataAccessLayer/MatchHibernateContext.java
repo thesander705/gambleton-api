@@ -40,11 +40,7 @@ public class MatchHibernateContext implements MatchContext {
         session.beginTransaction();
 
         for (BetOption betOption : betOptions) {
-            if (betOption.getId() != 0) {
-                betOption = session.get(BetOption.class, betOption.getId());
-            }else{
-                session.save(betOption);
-            }
+            session.save(betOption);
             newBetOptions.add(betOption);
         }
 
