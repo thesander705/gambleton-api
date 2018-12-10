@@ -5,6 +5,7 @@ import com.gambleton.dataAccessLayer.abstraction.MatchContext;
 import com.gambleton.models.Match;
 import com.gambleton.repository.abstraction.MatchRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MatchDefaultRepository implements MatchRepository {
@@ -16,26 +17,32 @@ public class MatchDefaultRepository implements MatchRepository {
 
     @Override
     public void create(Match entity) {
-
+        matchContext.create(entity);
     }
 
     @Override
     public Match get(int id) {
-        return null;
+        return matchContext.get(id);
     }
 
     @Override
     public List<Match> getAll() {
-        return null;
+        List<Match> matchs =  matchContext.getAll();
+
+        if (matchs == null){
+            matchs = new ArrayList<Match>();
+        }
+
+        return matchs;
     }
 
     @Override
     public void update(Match entity) {
-
+        matchContext.update(entity);
     }
 
     @Override
     public void delete(int id) {
-
+        matchContext.delete(id);
     }
 }
