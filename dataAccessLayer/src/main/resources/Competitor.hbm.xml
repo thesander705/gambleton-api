@@ -16,6 +16,6 @@
 
         <property name="name" type="string"/>
         <property name="description" type="string"/>
-        <many-to-one name="game" class="com.gambleton.models.Game" />
+        <many-to-one name="game" class="com.gambleton.models.Game" lazy="false"/>
     </class>
 </hibernate-mapping>
