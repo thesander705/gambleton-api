@@ -4,6 +4,7 @@ import com.gambleton.logic.abstraction.CompetitorLogic;
 import com.gambleton.models.Competitor;
 import com.gambleton.models.Game;
 import com.gambleton.repository.abstraction.CompetitorRepository;
+import com.gambleton.repository.abstraction.GameRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -19,6 +20,7 @@ public class CompetitorDefaultLogicTest {
     @Test
     public void createCheckIfCompetitorGetsCreated() {
         CompetitorRepository competitorRepository = mock(CompetitorRepository.class);
+        GameRepository gameRepository = mock(GameRepository.class);
 
         Game game = new Game();
         game.setDescription("Test game");
@@ -32,7 +34,7 @@ public class CompetitorDefaultLogicTest {
 
         ArgumentCaptor<Competitor> argument = ArgumentCaptor.forClass(Competitor.class);
 
-        CompetitorLogic competitorLogic = new CompetitorDefaultLogic(competitorRepository);
+        CompetitorLogic competitorLogic = new CompetitorDefaultLogic(competitorRepository, gameRepository);
         competitorLogic.createCompetitor(competitorToCreate.getName(), competitorToCreate.getDescription(), competitorToCreate.getGame().getId());
 
         verify(competitorRepository).create(argument.capture());
@@ -43,6 +45,8 @@ public class CompetitorDefaultLogicTest {
     @Test
     public void getAllReturnsAllCompetitors() {
         CompetitorRepository competitorRepository = mock(CompetitorRepository.class);
+        GameRepository gameRepository = mock(GameRepository.class);
+
         Game game = new Game();
         game.setDescription("Test game");
         game.setName("Game");
@@ -66,7 +70,7 @@ public class CompetitorDefaultLogicTest {
 
         when(competitorRepository.getAll()).thenReturn(allCompetitors);
 
-        CompetitorLogic competitorLogic = new CompetitorDefaultLogic(competitorRepository);
+        CompetitorLogic competitorLogic = new CompetitorDefaultLogic(competitorRepository, gameRepository);
         List<Competitor> allCompetitorsToTest = competitorLogic.getAllCompetitors();
         if (allCompetitorsToTest == null){
             Assert.fail();
