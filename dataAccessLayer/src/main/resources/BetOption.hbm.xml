@@ -15,6 +15,6 @@
         </id>
 
         <property name="payoutRate" type="double"/>
-        <many-to-one name="competitor" class="com.gambleton.models.Competitor"/>
+        <many-to-one name="competitor" class="com.gambleton.models.Competitor" lazy="false"/>
     </class>
 </hibernate-mapping>
