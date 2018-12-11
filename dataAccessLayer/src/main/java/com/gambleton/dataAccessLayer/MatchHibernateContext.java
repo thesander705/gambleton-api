@@ -35,17 +35,12 @@ public class MatchHibernateContext implements MatchContext {
     public void create(Match entity) {
         Session session = sessionFactory.getCurrentSession();
         List<BetOption> betOptions = entity.getBetOptions();
-        List<BetOption> newBetOptions = new ArrayList<>();
 
         session.beginTransaction();
 
         for (BetOption betOption : betOptions) {
             session.save(betOption);
-            newBetOptions.add(betOption);
         }
-
-        entity.getBetOptions().clear();
-        entity.getBetOptions().addAll(newBetOptions);
 
         session.save(entity);
         session.getTransaction().commit();
