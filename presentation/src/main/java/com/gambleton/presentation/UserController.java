@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @PostMapping("/userByCredentials")
-    @Cacheable("users")
+    @Cacheable(value = "users", key = "#credentials.username")
     public ResponseEntity<Object> getUserByCredentials(@RequestBody Credentials credentials) {
         UserLogic userLogic = Factory.getUserLogic();
         User user = userLogic.getByCredentials(credentials.getUsername(), credentials.getPassword());
@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping("/userByAuthToken")
-    @Cacheable("users")
+    @Cacheable(value = "users", key = "#authToken.authToken")
     public ResponseEntity<Object> getUserByCredentials(@RequestBody ByAuthToken authToken) {
         UserLogic userLogic = Factory.getUserLogic();
         User user = userLogic.getByAuthToken(authToken.getAuthToken());
