@@ -1,12 +1,9 @@
 package com.gambleton.models;
 
-import java.util.List;
-
 public class Game {
     private int id;
     private String name;
     private String description;
-    private List<Match> matches;
 
     public int getId() {
         return id;
@@ -30,13 +27,5 @@ public class Game {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public List<Match> getMatches() {
-        return matches;
-    }
-
-    public void setMatches(List<Match> matches) {
-        this.matches = matches;
     }
 }

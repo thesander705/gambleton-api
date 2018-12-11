@@ -2,6 +2,7 @@ package com.gambleton.logic;
 
 import com.gambleton.logic.abstraction.MatchLogic;
 import com.gambleton.models.BetOption;
+import com.gambleton.models.Game;
 import com.gambleton.models.Match;
 import com.gambleton.repository.abstraction.MatchRepository;
 
@@ -15,11 +16,12 @@ public class MatchDefaultLogic implements MatchLogic {
     }
 
     @Override
-    public void createMatch(String title, String description, List<BetOption> betOptions) {
+    public void createMatch(String title, String description, List<BetOption> betOptions, Game game) {
         Match match = new Match();
         match.setTitle(title);
         match.setDescription(description);
         match.setBetOptions(betOptions);
+        match.setGame(game);
         this.matchRepository.create(match);
     }
 

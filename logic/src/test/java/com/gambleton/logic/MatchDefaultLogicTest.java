@@ -56,7 +56,7 @@ public class MatchDefaultLogicTest {
         ArgumentCaptor<Match> argument = ArgumentCaptor.forClass(Match.class);
 
         MatchLogic matchLogic = new MatchDefaultLogic(matchRepository);
-        matchLogic.createMatch(match.getTitle(), match.getDescription(), betOptions);
+        matchLogic.createMatch(match.getTitle(), match.getDescription(), betOptions, game);
 
         verify(matchRepository).create(argument.capture());
 

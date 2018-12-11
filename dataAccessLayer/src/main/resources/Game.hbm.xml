@@ -16,14 +16,5 @@
 
         <property name="name" type="string"/>
         <property name="description" type="string"/>
-        <list name="matches" lazy="false">
-            <key>
-                <column name="game_id" not-null="false">
-
-                </column>
-            </key>
-            <index />
-            <one-to-many class="com.gambleton.models.Match" />
-        </list>
     </class>
 </hibernate-mapping>

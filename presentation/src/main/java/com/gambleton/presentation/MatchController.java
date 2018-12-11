@@ -2,7 +2,9 @@ package com.gambleton.presentation;
 
 import com.gambleton.factory.Factory;
 import com.gambleton.logic.abstraction.CompetitorLogic;
+import com.gambleton.logic.abstraction.GameLogic;
 import com.gambleton.logic.abstraction.MatchLogic;
+import com.gambleton.models.Game;
 import com.gambleton.models.Match;
 import com.gambleton.presentation.viewModels.matchController.CreateMatch;
 import com.gambleton.presentation.viewModels.matchController.createMatch.BetOption;
@@ -25,10 +27,12 @@ import java.util.stream.Collectors;
 public class MatchController {
     MatchLogic matchLogic;
     CompetitorLogic competitorLogic;
+    GameLogic gameLogic;
 
     public MatchController() {
         this.matchLogic = Factory.getMatchLogic();
         this.competitorLogic = Factory.getCompetitorLogic();
+        this.gameLogic = Factory.getGameLogic();
     }
 
     @PostMapping("/match")
@@ -40,7 +44,9 @@ public class MatchController {
                 betOptions.add(convertBetOptionViewModelToBetOption(betoption));
             }
 
-            this.matchLogic.createMatch(match.getTitle(), match.getDescription(), betOptions);
+            Game game = gameLogic.GetAllGames().stream().filter(x -> x.getId() == match.getGameId()).collect(Collectors.toList()).get(0);
+
+            this.matchLogic.createMatch(match.getTitle(), match.getDescription(), betOptions, game);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

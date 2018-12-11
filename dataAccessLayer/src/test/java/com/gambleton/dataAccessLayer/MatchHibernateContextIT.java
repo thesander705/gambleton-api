@@ -93,6 +93,7 @@ public class MatchHibernateContextIT {
         betOptions.add(betOption1);
         betOptions.add(betOption2);
         match.setBetOptions(betOptions);
+        match.setGame(game);
 
         try{
             matchHibernateContext.create(match);
@@ -221,6 +222,7 @@ public class MatchHibernateContextIT {
         betOptions.add(betOption1);
         betOptions.add(betOption2);
         match.setBetOptions(betOptions);
+        match.setGame(game);
 
 
         sessionFactory.getCurrentSession().beginTransaction();

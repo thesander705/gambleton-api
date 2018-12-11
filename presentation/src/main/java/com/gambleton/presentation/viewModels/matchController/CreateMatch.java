@@ -7,8 +7,9 @@ import java.util.List;
 public class CreateMatch {
     private String title;
     private String description;
+    private int gameId;
     private List<BetOption> betOptions;
-
+    
     public String getTitle() {
         return title;
     }
@@ -23,6 +24,14 @@ public class CreateMatch {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
     }
 
     public List<BetOption> getBetOptions() {

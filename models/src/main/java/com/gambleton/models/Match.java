@@ -7,6 +7,7 @@ public class Match {
     private String title;
     private String description;
     private List<BetOption> betOptions;
+    private Game game;
 
     public int getId() {
         return id;
@@ -38,5 +39,13 @@ public class Match {
 
     public void setBetOptions(List<BetOption> betOptions) {
         this.betOptions = betOptions;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 }
