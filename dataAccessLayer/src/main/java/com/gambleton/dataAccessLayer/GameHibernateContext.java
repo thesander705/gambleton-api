@@ -13,11 +13,20 @@ public class GameHibernateContext implements GameContext {
     private SessionFactory sessionFactory;
 
     public GameHibernateContext() {
+        this("hibernate.cfg.xml");
+    }
+
+    GameHibernateContext(String filePath) {
         try {
-            sessionFactory = new Configuration().configure().buildSessionFactory();
-        } catch (Exception ex) {
+            sessionFactory = new Configuration().configure(filePath).buildSessionFactory();
+        } catch (Throwable ex) {
+            System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         }
+    }
+
+    GameHibernateContext(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @Override

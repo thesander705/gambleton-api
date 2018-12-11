@@ -62,6 +62,9 @@
                 <sonar.language>
                     java
                 </sonar.language>
+                <sonar.coverage.exclusions>
+                    **/models/**,**/factory/**
+                </sonar.coverage.exclusions>
             </properties>
         </profile>
     </profiles>
@@ -103,12 +106,6 @@
                     <artifactId>sonar-packaging-maven-plugin</artifactId>
                     <version>1.17</version>
                     <extensions>true</extensions>
-                    <configuration>
-                        <!-- the entry-point class that extends org.sonar.api.SonarPlugin -->
-                        <pluginClass>com.mycompany.sonar.reference.ExamplePlugin</pluginClass>
-
-                        <!-- advanced properties can be set here. See paragraph "Advanced Build Properties". -->
-                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
@@ -125,6 +122,18 @@
                             <phase>test</phase>
                             <goals>
                                 <goal>report</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
                             </goals>
                         </execution>
                     </executions>
