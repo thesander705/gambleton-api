@@ -102,4 +102,9 @@ public class MatchHibernateContext implements MatchContext {
         session.delete(toDelete);
         session.getTransaction().commit();
     }
+
+    @Override
+    public List<Match> getMatchesByGame(int gameId) {
+        return null;
+    }
 }
