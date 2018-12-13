@@ -359,4 +359,104 @@ public class MatchHibernateContextIT {
 
         Assert.fail();
     }
+
+    @Test
+    public void getMatchesByGameReturnsAllMatchesByAGame(){
+
+        Game game = new Game();
+        game.setDescription("Tennis game");
+        game.setName("Tennis");
+
+        Game game2 = new Game();
+        game2.setDescription("Tennis game");
+        game2.setName("Tennis");
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        this.sessionFactory.getCurrentSession().save(game);
+        this.sessionFactory.getCurrentSession().save(game2);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        Competitor competitor1 = new Competitor();
+        competitor1.setDescription("Test competitor");
+        competitor1.setName("Test competitor");
+        competitor1.setGame(game);
+
+        Competitor competitor2 = new Competitor();
+        competitor2.setDescription("Test competitor2");
+        competitor2.setName("Test competitor2");
+        competitor2.setGame(game);
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        this.sessionFactory.getCurrentSession().save(competitor1);
+        this.sessionFactory.getCurrentSession().save(competitor2);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        BetOption betOption1 = new BetOption();
+        betOption1.setPayoutRate(2);
+        betOption1.setCompetitor(competitor1);
+
+        BetOption betOption2 = new BetOption();
+        betOption2.setPayoutRate(1);
+        betOption2.setCompetitor(competitor2);
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        this.sessionFactory.getCurrentSession().save(betOption1);
+        this.sessionFactory.getCurrentSession().save(betOption2);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        Match match = new Match();
+        match.setTitle("name");
+        match.setDescription("description");
+        List<BetOption> betOptions = new ArrayList<>();
+        betOptions.add(betOption1);
+        betOptions.add(betOption2);
+        match.setBetOptions(betOptions);
+        match.setGame(game);
+
+        Calendar calendar = new Calendar.Builder().build();
+        calendar.set(2018, 11, 13, 20, 30);
+        Date date = calendar.getTime();
+        match.setStartDate(date);
+        calendar.set(2018, 11, 13, 22, 30);
+        date = calendar.getTime();
+        match.setEndDate(date);
+
+        Match match2 = new Match();
+        match2.setStartDate(match.getStartDate());
+        match2.setEndDate(match.getEndDate());
+        match2.setBetOptions(match.getBetOptions());
+        match2.setDescription(match.getDescription());
+        match2.setTitle(match.getTitle());
+        match2.setGame(game2);
+
+        Match match3 = new Match();
+        match3.setStartDate(match.getStartDate());
+        match3.setEndDate(match.getEndDate());
+        match3.setBetOptions(match.getBetOptions());
+        match3.setDescription(match.getDescription());
+        match3.setTitle(match.getTitle());
+        match3.setGame(game);
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        this.sessionFactory.getCurrentSession().save(match);
+        this.sessionFactory.getCurrentSession().save(match2);
+        this.sessionFactory.getCurrentSession().save(match3);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        ArrayList<Game> games = (ArrayList<Game>) sessionFactory.getCurrentSession().createQuery("from Game ").list();
+
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        if (games == null || games.isEmpty()){
+            Assert.fail();
+            return;
+        }
+
+        int gameId = games.get(0).getId();
+        List<Match> matchesFromGame = this.matchHibernateContext.getMatchesByGame(gameId);
+        Assert.assertNotNull(matchesFromGame);
+        Assert.assertEquals(2, matchesFromGame.size());
+
+    }
 }
