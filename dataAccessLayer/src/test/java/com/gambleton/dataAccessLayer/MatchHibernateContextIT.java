@@ -459,4 +459,32 @@ public class MatchHibernateContextIT {
         Assert.assertEquals(2, matchesFromGame.size());
 
     }
+
+    @Test
+    public void getMatchesByGameReturnsEmptyListWhenGameHasNoMatches(){
+
+        Game game = new Game();
+        game.setDescription("Tennis game");
+        game.setName("Tennis");
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        this.sessionFactory.getCurrentSession().save(game);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        ArrayList<Game> games = (ArrayList<Game>) sessionFactory.getCurrentSession().createQuery("from Game ").list();
+
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        if (games == null || games.isEmpty()){
+            Assert.fail();
+            return;
+        }
+
+        int gameId = games.get(0).getId();
+        List<Match> matchesFromGame = this.matchHibernateContext.getMatchesByGame(gameId);
+        Assert.assertNotNull(matchesFromGame);
+        Assert.assertEquals(0, matchesFromGame.size());
+
+    }
 }
