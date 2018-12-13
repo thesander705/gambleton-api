@@ -276,4 +276,74 @@ public class MatchRepositoryTest {
         verify(matchContext).delete(argument.capture());
         Assert.assertEquals(argument.getValue().intValue(), matchId);
     }
+
+    @Test
+    public void getMatchesByGameReturnsAllGamesByThatMatch(){
+        MatchContext matchContext = mock(MatchContext.class);
+
+        Game game = new Game();
+        game.setDescription("Tennis game");
+        game.setName("Tennis");
+
+        Competitor competitor1 = new Competitor();
+        competitor1.setDescription("Test competitor");
+        competitor1.setName("Test competitor");
+        competitor1.setGame(game);
+
+        Competitor competitor2 = new Competitor();
+        competitor2.setDescription("Test competitor2");
+        competitor2.setName("Test competitor2");
+        competitor2.setGame(game);
+
+        BetOption betOption1 = new BetOption();
+        betOption1.setPayoutRate(2);
+        betOption1.setCompetitor(competitor1);
+
+        BetOption betOption2 = new BetOption();
+        betOption2.setPayoutRate(1);
+        betOption2.setCompetitor(competitor2);
+
+        Match match1 = new Match();
+        match1.setTitle("name");
+        match1.setDescription("description");
+        List<BetOption> betOptions = new ArrayList<>();
+        betOptions.add(betOption1);
+        betOptions.add(betOption2);
+        match1.setBetOptions(betOptions);
+
+        Calendar calendar = new Calendar.Builder().build();
+        calendar.set(2018, 11, 13, 20, 30);
+        Date date = calendar.getTime();
+        match1.setStartDate(date);
+        calendar.set(2018, 11, 13, 22, 30);
+        date = calendar.getTime();
+        match1.setEndDate(date);
+
+        Match match2 = new Match();
+        match2.setTitle("name");
+        match2.setDescription("description");
+        betOptions.add(betOption1);
+        betOptions.add(betOption2);
+        match2.setBetOptions(betOptions);
+        calendar.set(2018, 11, 13, 20, 30);
+        date = calendar.getTime();
+        match2.setStartDate(date);
+        calendar.set(2018, 11, 13, 22, 30);
+        date = calendar.getTime();
+        match2.setEndDate(date);
+
+        ArrayList<Match> allMatchs = new ArrayList<Match>();
+        allMatchs.add(match1);
+        allMatchs.add(match2);
+
+        when(matchContext.getMatchesByGame(anyInt())).thenReturn(allMatchs);
+
+        MatchRepository matchRepository = new MatchDefaultRepository(matchContext);
+        List<Match> allMatchsToTest = matchRepository.getMatchesByGame(1);
+        if (allMatchsToTest == null){
+            Assert.fail();
+            return;
+        }
+        Assert.assertEquals(2, allMatchsToTest.size());
+    }
 }
