@@ -48,6 +48,6 @@ public class MatchDefaultRepository implements MatchRepository {
 
     @Override
     public List<Match> getMatchesByGame(int gameId) {
-        return null;
+        return this.matchContext.getMatchesByGame(gameId);
     }
 }
