@@ -45,4 +45,9 @@ public class MatchDefaultRepository implements MatchRepository {
     public void delete(int id) {
         matchContext.delete(id);
     }
+
+    @Override
+    public List<Match> getMatchesByGame(int gameId) {
+        return null;
+    }
 }
