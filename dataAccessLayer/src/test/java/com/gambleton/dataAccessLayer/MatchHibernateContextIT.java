@@ -13,6 +13,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MatchHibernateContextIT {
@@ -94,6 +96,19 @@ public class MatchHibernateContextIT {
         betOptions.add(betOption2);
         match.setBetOptions(betOptions);
         match.setGame(game);
+
+        Calendar calendar = new Calendar.Builder().build();
+        calendar.set(Calendar.YEAR , 2018);
+        calendar.set(Calendar.MONTH , 12);
+        calendar.set(Calendar.DAY_OF_MONTH , 13);
+        calendar.set(Calendar.HOUR , 20);
+        calendar.set(Calendar.MINUTE , 30);
+        Date date = calendar.getTime();
+        match.setStartDate(date);
+        calendar.set(Calendar.HOUR , 22);
+        calendar.set(Calendar.MINUTE , 45);
+        date = calendar.getTime();
+        match.setEndDate(date);
 
         try{
             matchHibernateContext.create(match);
@@ -224,6 +239,14 @@ public class MatchHibernateContextIT {
         match.setBetOptions(betOptions);
         match.setGame(game);
 
+        Calendar calendar = new Calendar.Builder().build();
+        calendar.set(2018, 11, 13, 20, 30);
+        Date date = calendar.getTime();
+        match.setStartDate(date);
+        calendar.set(2018, 11, 13, 22, 30);
+        date = calendar.getTime();
+        match.setEndDate(date);
+
 
         sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().save(match);
@@ -246,6 +269,14 @@ public class MatchHibernateContextIT {
         match.setTitle("New name");
         match.setDescription("New description");
         match.getBetOptions().get(0).setPayoutRate(22);
+
+        calendar = new Calendar.Builder().build();
+        calendar.set(2019, 10, 12, 22, 30);
+        date = calendar.getTime();
+        match.setStartDate(date);
+        calendar.set(2019, 10, 12, 23, 30);
+        date = calendar.getTime();
+        match.setEndDate(date);
         this.matchHibernateContext.update(match);
 
         sessionFactory.getCurrentSession().beginTransaction();
@@ -268,6 +299,17 @@ public class MatchHibernateContextIT {
             }
 
             if (matchFromCollection.getBetOptions().get(0).getPayoutRate() != 22){
+                Assert.fail();
+                return;
+            }
+            calendar.setTime(matchFromCollection.getStartDate());
+            if (calendar.get(Calendar.YEAR) != 2019 ){
+                Assert.fail();
+                return;
+            }
+
+            calendar.setTime(matchFromCollection.getEndDate());
+            if (calendar.get(Calendar.YEAR) != 2019){
                 Assert.fail();
                 return;
             }

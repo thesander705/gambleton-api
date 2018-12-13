@@ -86,6 +86,8 @@ public class MatchHibernateContext implements MatchContext {
         toUpdate.setTitle(entity.getTitle());
         toUpdate.setDescription(entity.getDescription());
         toUpdate.setBetOptions(entity.getBetOptions());
+        toUpdate.setStartDate(entity.getStartDate());
+        toUpdate.setEndDate(entity.getEndDate());
 
         session.update(toUpdate);
         session.getTransaction().commit();

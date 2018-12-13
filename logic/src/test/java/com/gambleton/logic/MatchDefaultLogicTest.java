@@ -12,6 +12,8 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static org.mockito.Mockito.mock;
@@ -52,11 +54,17 @@ public class MatchDefaultLogicTest {
         betOptions.add(betOption1);
         betOptions.add(betOption2);
         match.setBetOptions(betOptions);
-
+        Calendar calendar = new Calendar.Builder().build();
+        calendar.set(2018, 11, 13, 20, 30);
+        Date date = calendar.getTime();
+        match.setStartDate(date);
+        calendar.set(2018, 11, 13, 22, 30);
+        date = calendar.getTime();
+        match.setEndDate(date);
         ArgumentCaptor<Match> argument = ArgumentCaptor.forClass(Match.class);
 
         MatchLogic matchLogic = new MatchDefaultLogic(matchRepository);
-        matchLogic.createMatch(match.getTitle(), match.getDescription(), betOptions, game);
+        matchLogic.createMatch(match.getTitle(), match.getDescription(), betOptions, game, match.getStartDate(), match.getEndDate());
 
         verify(matchRepository).create(argument.capture());
 
@@ -97,12 +105,25 @@ public class MatchDefaultLogicTest {
         betOptions.add(betOption1);
         betOptions.add(betOption2);
         matchFromContext1.setBetOptions(betOptions);
+        Calendar calendar = new Calendar.Builder().build();
+        calendar.set(2018, 11, 13, 20, 30);
+        Date date = calendar.getTime();
+        matchFromContext1.setStartDate(date);
+        calendar.set(2018, 11, 13, 22, 30);
+        date = calendar.getTime();
+        matchFromContext1.setEndDate(date);
 
         Match matchFromContext2 = new Match();
         matchFromContext2.setId(2);
         matchFromContext2.setTitle("Test match2");
         matchFromContext2.setDescription("testMatch");
         matchFromContext2.setBetOptions(betOptions);
+        calendar.set(2018, 11, 13, 20, 30);
+        date = calendar.getTime();
+        matchFromContext2.setStartDate(date);
+        calendar.set(2018, 11, 13, 22, 30);
+        date = calendar.getTime();
+        matchFromContext2.setEndDate(date);
 
         ArrayList<Match> allMatchs = new ArrayList<Match>();
         allMatchs.add(matchFromContext1);

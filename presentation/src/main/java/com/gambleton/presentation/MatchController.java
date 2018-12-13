@@ -46,7 +46,7 @@ public class MatchController {
 
             Game game = gameLogic.GetAllGames().stream().filter(x -> x.getId() == match.getGameId()).collect(Collectors.toList()).get(0);
 
-            this.matchLogic.createMatch(match.getTitle(), match.getDescription(), betOptions, game);
+            this.matchLogic.createMatch(match.getTitle(), match.getDescription(), betOptions, game, match.getStartDate(), match.getEndDate());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -66,7 +66,7 @@ public class MatchController {
         return ResponseEntity.status(HttpStatus.OK).body(matchs);
     }
 
-    private com.gambleton.models.BetOption convertBetOptionViewModelToBetOption(BetOption betOption){
+    private com.gambleton.models.BetOption convertBetOptionViewModelToBetOption(BetOption betOption) {
         com.gambleton.models.BetOption newBetOption = new com.gambleton.models.BetOption();
         newBetOption.setCompetitor(competitorLogic.getAllCompetitors().stream().filter(x -> x.getId() == betOption.getCompetitorId()).collect(Collectors.toList()).get(0));
         newBetOption.setPayoutRate(betOption.getPayoutRate());

@@ -2,6 +2,7 @@ package com.gambleton.presentation.viewModels.matchController;
 
 import com.gambleton.presentation.viewModels.matchController.createMatch.BetOption;
 
+import java.util.Date;
 import java.util.List;
 
 public class CreateMatch {
@@ -9,7 +10,9 @@ public class CreateMatch {
     private String description;
     private int gameId;
     private List<BetOption> betOptions;
-    
+    private Date startDate;
+    private Date endDate;
+
     public String getTitle() {
         return title;
     }
@@ -40,5 +43,21 @@ public class CreateMatch {
 
     public void setBetOptions(List<BetOption> betOptions) {
         this.betOptions = betOptions;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }

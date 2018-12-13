@@ -1,5 +1,6 @@
 package com.gambleton.models;
 
+import java.util.Date;
 import java.util.List;
 
 public class Match {
@@ -8,6 +9,8 @@ public class Match {
     private String description;
     private List<BetOption> betOptions;
     private Game game;
+    private Date startDate;
+    private Date endDate;
 
     public int getId() {
         return id;
@@ -47,5 +50,21 @@ public class Match {
 
     public void setGame(Game game) {
         this.game = game;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }

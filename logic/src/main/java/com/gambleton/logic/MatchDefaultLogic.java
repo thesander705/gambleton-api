@@ -6,6 +6,7 @@ import com.gambleton.models.Game;
 import com.gambleton.models.Match;
 import com.gambleton.repository.abstraction.MatchRepository;
 
+import java.util.Date;
 import java.util.List;
 
 public class MatchDefaultLogic implements MatchLogic {
@@ -16,12 +17,14 @@ public class MatchDefaultLogic implements MatchLogic {
     }
 
     @Override
-    public void createMatch(String title, String description, List<BetOption> betOptions, Game game) {
+    public void createMatch(String title, String description, List<BetOption> betOptions, Game game, Date startDate, Date endDate) {
         Match match = new Match();
         match.setTitle(title);
         match.setDescription(description);
         match.setBetOptions(betOptions);
         match.setGame(game);
+        match.setStartDate(startDate);
+        match.setEndDate(endDate);
         this.matchRepository.create(match);
     }
 

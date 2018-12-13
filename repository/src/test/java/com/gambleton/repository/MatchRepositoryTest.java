@@ -11,6 +11,8 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
@@ -52,6 +54,13 @@ public class MatchRepositoryTest {
         betOptions.add(betOption1);
         betOptions.add(betOption2);
         match.setBetOptions(betOptions);
+        Calendar calendar = new Calendar.Builder().build();
+        calendar.set(2018, 11, 13, 20, 30);
+        Date date = calendar.getTime();
+        match.setStartDate(date);
+        calendar.set(2018, 11, 13, 22, 30);
+        date = calendar.getTime();
+        match.setEndDate(date);
 
         ArgumentCaptor<Match> argument = ArgumentCaptor.forClass(Match.class);
 
@@ -99,6 +108,13 @@ public class MatchRepositoryTest {
         betOptions.add(betOption1);
         betOptions.add(betOption2);
         match.setBetOptions(betOptions);
+        Calendar calendar = new Calendar.Builder().build();
+        calendar.set(2018, 11, 13, 20, 30);
+        Date date = calendar.getTime();
+        match.setStartDate(date);
+        calendar.set(2018, 11, 13, 22, 30);
+        date = calendar.getTime();
+        match.setEndDate(date);
 
         when(matchContext.get(id)).thenReturn(match);
 
@@ -142,12 +158,26 @@ public class MatchRepositoryTest {
         betOptions.add(betOption2);
         match1.setBetOptions(betOptions);
 
+        Calendar calendar = new Calendar.Builder().build();
+        calendar.set(2018, 11, 13, 20, 30);
+        Date date = calendar.getTime();
+        match1.setStartDate(date);
+        calendar.set(2018, 11, 13, 22, 30);
+        date = calendar.getTime();
+        match1.setEndDate(date);
+
         Match match2 = new Match();
         match2.setTitle("name");
         match2.setDescription("description");
         betOptions.add(betOption1);
         betOptions.add(betOption2);
         match2.setBetOptions(betOptions);
+        calendar.set(2018, 11, 13, 20, 30);
+        date = calendar.getTime();
+        match2.setStartDate(date);
+        calendar.set(2018, 11, 13, 22, 30);
+        date = calendar.getTime();
+        match2.setEndDate(date);
 
         ArrayList<Match> allMatchs = new ArrayList<Match>();
         allMatchs.add(match1);
@@ -208,6 +238,13 @@ public class MatchRepositoryTest {
         betOptions.add(betOption1);
         betOptions.add(betOption2);
         match.setBetOptions(betOptions);
+        Calendar calendar = new Calendar.Builder().build();
+        calendar.set(2018, 11, 13, 20, 30);
+        Date date = calendar.getTime();
+        match.setStartDate(date);
+        calendar.set(2018, 11, 13, 22, 30);
+        date = calendar.getTime();
+        match.setEndDate(date);
 
 
         ArgumentCaptor<Match> argument = ArgumentCaptor.forClass(Match.class);
@@ -221,6 +258,8 @@ public class MatchRepositoryTest {
         Assert.assertEquals(argument.getValue().getId(), match.getId());
         Assert.assertEquals(argument.getValue().getBetOptions().get(0).getId(), match.getBetOptions().get(0).getId());
         Assert.assertEquals(argument.getValue().getBetOptions().get(1).getId(), match.getBetOptions().get(1).getId());
+        Assert.assertEquals(argument.getValue().getStartDate(), match.getStartDate());
+        Assert.assertEquals(argument.getValue().getEndDate(), match.getEndDate());
     }
 
     @Test
