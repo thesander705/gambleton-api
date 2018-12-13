@@ -108,10 +108,9 @@ public class MatchHibernateContext implements MatchContext {
         List<Match> matches;
 
         Session session = sessionFactory.getCurrentSession();
+
         session.beginTransaction();
-
         matches = (ArrayList<Match>) session.createQuery("from Match match where match.game.id = :gameId").setParameter("gameId", gameId).list();
-
         session.getTransaction().commit();
 
         return matches;
