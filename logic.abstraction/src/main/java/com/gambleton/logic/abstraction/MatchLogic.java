@@ -11,4 +11,6 @@ public interface MatchLogic {
     void createMatch(String title, String description, List<BetOption> betOptions, Game game, Date startDate, Date endDate);
 
     List<Match> getAllMatches();
+
+    List<Match> getMatchesByGame(int gameId);
 }
