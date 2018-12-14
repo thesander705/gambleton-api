@@ -36,7 +36,7 @@ public class MatchController {
     }
 
     @PostMapping("/match")
-    @CacheEvict(value = "matches", allEntries = true)
+    @CacheEvict(value = {"matches", "matchesByGame"}, allEntries = true)
     public ResponseEntity<Object> createMatch(@RequestBody CreateMatch match) {
         List<com.gambleton.models.BetOption> betOptions = new ArrayList<>();
         try {
