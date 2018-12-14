@@ -32,4 +32,9 @@ public class MatchDefaultLogic implements MatchLogic {
     public List<Match> getAllMatches() {
         return this.matchRepository.getAll();
     }
+
+    @Override
+    public List<Match> getMatchesByGame(int gameId) {
+        return null;
+    }
 }
