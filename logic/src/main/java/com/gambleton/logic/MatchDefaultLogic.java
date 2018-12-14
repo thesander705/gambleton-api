@@ -35,6 +35,6 @@ public class MatchDefaultLogic implements MatchLogic {
 
     @Override
     public List<Match> getMatchesByGame(int gameId) {
-        return null;
+        return this.matchRepository.getMatchesByGame(gameId);
     }
 }
