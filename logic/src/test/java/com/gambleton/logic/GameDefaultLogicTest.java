@@ -10,6 +10,7 @@ import org.mockito.ArgumentCaptor;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
 public class GameDefaultLogicTest {
@@ -53,5 +54,22 @@ public class GameDefaultLogicTest {
         GameLogic gameLogic = new GameDefaultLogic(gameRepository);
         List<Game> allGamesToTest = gameLogic.GetAllGames();
         Assert.assertEquals(2, allGamesToTest.size());
+    }
+
+    @Test
+    public void getReturnsGameWhenCorrectId() {
+        GameRepository gameRepository = mock(GameRepository.class);
+        int id = 1;
+
+        Game gameFromRepository = new Game();
+        gameFromRepository.setId(id);
+        gameFromRepository.setName("Test game");
+        gameFromRepository.setDescription("testGame");
+
+        when(gameRepository.get(id)).thenReturn(gameFromRepository);
+
+        GameLogic gameLogic = new GameDefaultLogic(gameRepository);
+        Game game = gameLogic.getGame(id);
+        assertNotNull(game);
     }
 }

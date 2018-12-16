@@ -25,4 +25,9 @@ public class GameDefaultLogic implements GameLogic {
     public List<Game> GetAllGames() {
         return this.gameRepository.getAll();
     }
+
+    @Override
+    public Game getGame(int gameId) {
+        return this.gameRepository.get(gameId);
+    }
 }

@@ -50,6 +50,19 @@ public class GameController {
         return ResponseEntity.status(HttpStatus.OK).body(games);
     }
 
+    @GetMapping("/game/{gameId}")
+    @Cacheable(value = "game", key = "#gameId")
+    public ResponseEntity<Object> getGame(@PathVariable int gameId) {
+        Game game;
+        try {
+            game = this.gameLogic.getGame(gameId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(game);
+    }
+
     @GetMapping("/game/{gameId}/match")
     @Cacheable(value = "matchesByGame", key = "#gameId")
     public ResponseEntity<Object> getMatchesByGame(@PathVariable int gameId) {
