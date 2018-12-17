@@ -4,17 +4,17 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="com.gambleton.models.Game" table="games">
+    <class name="com.gambleton.models.BetOption" table="bet_options">
 
         <meta attribute="class-description">
-            This class contains the game details.
+            This class contains the bet option details.
         </meta>
 
         <id name="id" type="int">
             <generator class="native"/>
         </id>
 
-        <property name="name" type="string"/>
-        <property name="description" type="string"/>
+        <property name="payoutRate" type="double"/>
+        <many-to-one name="competitor" class="com.gambleton.models.Competitor" lazy="false"/>
     </class>
 </hibernate-mapping>

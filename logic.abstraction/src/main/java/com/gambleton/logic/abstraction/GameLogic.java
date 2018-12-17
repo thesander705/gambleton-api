@@ -8,4 +8,6 @@ public interface GameLogic {
     void CreateGame(String name, String description);
 
     List<Game> GetAllGames();
+
+    Game getGame(int gameId);
 }

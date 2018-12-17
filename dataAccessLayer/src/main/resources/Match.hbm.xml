@@ -1,0 +1,32 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.gambleton.models.Match" table="matches">
+
+        <meta attribute="class-description">
+            This class contains the match details.
+        </meta>
+
+        <id name="id" type="int">
+            <generator class="native"/>
+        </id>
+
+        <property name="title" type="string"/>
+        <property name="description" type="string"/>
+        <many-to-one name="game" class="com.gambleton.models.Game" lazy="false"/>
+        <list name="betOptions" lazy="false">
+            <key>
+                <column name="match_id" not-null="false">
+
+                </column>
+            </key>
+            <index/>
+            <one-to-many class="com.gambleton.models.BetOption"/>
+        </list>
+        <property name="startDate" type="timestamp"/>
+        <property name="endDate" type="timestamp"/>
+    </class>
+</hibernate-mapping>
