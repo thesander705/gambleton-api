@@ -26,7 +26,7 @@ public class CompetitorController {
     }
 
     @PostMapping("/competitor")
-    @CacheEvict(value = "competitors", allEntries = true)
+    @CacheEvict(value = {"competitors", "competitorsByGame"}, allEntries = true)
     public ResponseEntity<Object> createCompetitor(@RequestBody CreateCompetitor competitor) {
         try {
             this.competitorLogic.createCompetitor(competitor.getName(), competitor.getDescription(), competitor.getGameId());

@@ -154,4 +154,35 @@ public class CompetitorRepositoryTest {
         verify(competitorContext).delete(argument.capture());
         Assert.assertEquals(argument.getValue().intValue(), competitorId);
     }
+
+    @Test
+    public void getCompetitorsByGameGetsAllCompetitorsByGame(){
+        CompetitorContext competitorContext = mock(CompetitorContext.class);
+
+        Game game = new Game();
+        game.setName("Test game");
+        game.setDescription("This is a test game");
+
+        Competitor competitor1 = new Competitor();
+        competitor1.setName("Test competitor");
+        competitor1.setDescription("This is a test competitor");
+        competitor1.setGame(game);
+
+        Competitor competitor2 = new Competitor();
+        competitor2.setName("Test competitor2");
+        competitor2.setDescription("This is a test competitor2");
+        competitor2.setGame(game);
+
+        List<Competitor> competitors = new ArrayList<Competitor>();
+        competitors.add(competitor1);
+        competitors.add(competitor2);
+
+        when(competitorContext.getCompetitorsByGame(anyInt())).thenReturn(competitors);
+
+        CompetitorRepository competitorRepository = new CompetitorDefaultRepository(competitorContext);
+        List<Competitor> competitorsFromRepository = competitorRepository.getCompetitorsByGame(1);
+
+        Assert.assertNotNull(competitorsFromRepository);
+        Assert.assertEquals(2,competitorsFromRepository.size());
+    }
 }

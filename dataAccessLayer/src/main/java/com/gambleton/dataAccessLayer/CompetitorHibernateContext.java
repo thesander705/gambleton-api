@@ -86,4 +86,17 @@ public class CompetitorHibernateContext implements CompetitorContext {
         session.delete(toDelete);
         session.getTransaction().commit();
     }
+
+    @Override
+    public List<Competitor> getCompetitorsByGame(int gameId) {
+        List<Competitor> matches;
+
+        Session session = sessionFactory.getCurrentSession();
+
+        session.beginTransaction();
+        matches = (ArrayList<Competitor>) session.createQuery("from Competitor competitor where competitor.game.id = :gameId").setParameter("gameId", gameId).list();
+        session.getTransaction().commit();
+
+        return matches;
+    }
 }

@@ -35,10 +35,10 @@ public class CompetitorHibernateContextIT {
     }
 
     @Test
-    public void parameterlessConstructorWorks(){
-        try{
+    public void parameterlessConstructorWorks() {
+        try {
             competitorHibernateContext = new CompetitorHibernateContext();
-        }catch (Exception e){
+        } catch (Exception e) {
             Assert.fail();
             return;
         }
@@ -47,12 +47,12 @@ public class CompetitorHibernateContextIT {
     }
 
     @Test
-    public void constructorThrowsNotAnExceptionWhenEverythingIsOkay(){
+    public void constructorThrowsNotAnExceptionWhenEverythingIsOkay() {
         this.competitorHibernateContext = new CompetitorHibernateContext("hibernate-test.cfg.xml");
     }
 
     @Test
-    public void createCreatesACompetitor(){
+    public void createCreatesACompetitor() {
         Game game = new Game();
         game.setName("Test game");
         game.setDescription("This is a test game");
@@ -74,7 +74,7 @@ public class CompetitorHibernateContextIT {
 
         session.getTransaction().commit();
 
-        if (competitors != null && !competitors.isEmpty()){
+        if (competitors != null && !competitors.isEmpty()) {
             Assert.assertTrue(true);
             return;
         }
@@ -83,7 +83,7 @@ public class CompetitorHibernateContextIT {
     }
 
     @Test
-    public void getGetsACompetitorById(){
+    public void getGetsACompetitorById() {
         Game game = new Game();
         game.setName("Test game");
         game.setDescription("This is a test game");
@@ -106,7 +106,7 @@ public class CompetitorHibernateContextIT {
 
         sessionFactory.getCurrentSession().getTransaction().commit();
 
-        if (competitors == null || competitors.isEmpty()){
+        if (competitors == null || competitors.isEmpty()) {
             Assert.fail();
             return;
         }
@@ -114,7 +114,7 @@ public class CompetitorHibernateContextIT {
         int idToGet = competitors.get(0).getId();
         Competitor competitorGotten = competitorHibernateContext.get(idToGet);
 
-        if (competitorGotten != null && competitorGotten.getId() == idToGet){
+        if (competitorGotten != null && competitorGotten.getId() == idToGet) {
             Assert.assertTrue(true);
             return;
         }
@@ -141,13 +141,13 @@ public class CompetitorHibernateContextIT {
         sessionFactory.getCurrentSession().getTransaction().commit();
 
         List<Competitor> competitors = competitorHibernateContext.getAll();
-        if (competitors == null){
+        if (competitors == null) {
             Assert.fail();
             return;
         }
 
         for (Competitor userFromCollection : competitors) {
-            if (userFromCollection.getName().equals("Test competitor")){
+            if (userFromCollection.getName().equals("Test competitor")) {
                 Assert.assertTrue(true);
                 return;
             }
@@ -157,7 +157,7 @@ public class CompetitorHibernateContextIT {
     }
 
     @Test
-    public void updateUpdatesACompetitor(){
+    public void updateUpdatesACompetitor() {
         Game game = new Game();
         game.setName("Test game");
         game.setDescription("This is a test game");
@@ -180,7 +180,7 @@ public class CompetitorHibernateContextIT {
 
         sessionFactory.getCurrentSession().getTransaction().commit();
 
-        if (competitors == null || competitors.isEmpty()){
+        if (competitors == null || competitors.isEmpty()) {
             Assert.fail();
             return;
         }
@@ -198,16 +198,16 @@ public class CompetitorHibernateContextIT {
         sessionFactory.getCurrentSession().getTransaction().commit();
 
         for (Competitor competitorFromCollection : competitors) {
-            if (competitorFromCollection.getId() != competitorId){
+            if (competitorFromCollection.getId() != competitorId) {
                 continue;
             }
 
-            if (!competitorFromCollection.getName().equals("New name")){
+            if (!competitorFromCollection.getName().equals("New name")) {
                 Assert.fail();
                 return;
             }
 
-            if (!competitorFromCollection.getDescription().equals("New description")){
+            if (!competitorFromCollection.getDescription().equals("New description")) {
                 Assert.fail();
                 return;
             }
@@ -220,7 +220,7 @@ public class CompetitorHibernateContextIT {
     }
 
     @Test
-    public void deleteDeletesCompetitor(){
+    public void deleteDeletesCompetitor() {
         Game game = new Game();
         game.setName("Test game");
         game.setDescription("This is a test game");
@@ -242,7 +242,7 @@ public class CompetitorHibernateContextIT {
 
         sessionFactory.getCurrentSession().getTransaction().commit();
 
-        if (competitors == null || competitors.isEmpty()){
+        if (competitors == null || competitors.isEmpty()) {
             Assert.fail();
             return;
         }
@@ -258,11 +258,47 @@ public class CompetitorHibernateContextIT {
 
         sessionFactory.getCurrentSession().getTransaction().commit();
 
-        if (competitors == null || competitors.isEmpty()){
+        if (competitors == null || competitors.isEmpty()) {
             Assert.assertTrue(true);
             return;
         }
 
         Assert.fail();
+    }
+
+    @Test
+    public void getCompetitorsByGameGetsAllCompetitorsByGame() {
+        Game game = new Game();
+        game.setName("Test game");
+        game.setDescription("This is a test game");
+        sessionFactory.getCurrentSession().beginTransaction();
+        this.sessionFactory.getCurrentSession().save(game);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        Competitor competitor1 = new Competitor();
+        competitor1.setName("Test competitor");
+        competitor1.setDescription("This is a test competitor");
+        competitor1.setGame(game);
+
+        Competitor competitor2 = new Competitor();
+        competitor2.setName("Test competitor2");
+        competitor2.setDescription("This is a test competitor2");
+        competitor2.setGame(game);
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        sessionFactory.getCurrentSession().save(competitor1);
+        sessionFactory.getCurrentSession().save(competitor2);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        List<Game> games = sessionFactory.getCurrentSession().createQuery("from Game ").list();
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        int gameId = games.get(0).getId();
+
+        List<Competitor> competitors = this.competitorHibernateContext.getCompetitorsByGame(gameId);
+
+        Assert.assertNotNull(competitors);
+        Assert.assertEquals(2, competitors.size());
     }
 }
