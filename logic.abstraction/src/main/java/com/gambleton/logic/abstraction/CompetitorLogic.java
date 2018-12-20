@@ -7,4 +7,5 @@ import java.util.List;
 public interface CompetitorLogic {
     void createCompetitor(String name, String description, int gameId);
     List<Competitor> getAllCompetitors();
+    List<Competitor> getCompetitorsByGame(int gameId);
 }

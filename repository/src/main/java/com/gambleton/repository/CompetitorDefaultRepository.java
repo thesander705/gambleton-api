@@ -42,4 +42,9 @@ public class CompetitorDefaultRepository implements CompetitorRepository {
     public void delete(int id) {
         this.competitorContext.delete(id);
     }
+
+    @Override
+    public List<Competitor> getCompetitorsByGame(int gameId) {
+        return this.competitorContext.getCompetitorsByGame(gameId);
+    }
 }

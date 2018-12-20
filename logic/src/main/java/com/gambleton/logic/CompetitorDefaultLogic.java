@@ -29,4 +29,9 @@ public class CompetitorDefaultLogic implements CompetitorLogic {
     public List<Competitor> getAllCompetitors() {
         return this.competitorRepository.getAll();
     }
+
+    @Override
+    public List<Competitor> getCompetitorsByGame(int gameId) {
+        return this.competitorRepository.getCompetitorsByGame(gameId);
+    }
 }

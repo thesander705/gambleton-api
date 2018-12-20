@@ -1,8 +1,10 @@
 package com.gambleton.presentation;
 
 import com.gambleton.factory.Factory;
+import com.gambleton.logic.abstraction.CompetitorLogic;
 import com.gambleton.logic.abstraction.GameLogic;
 import com.gambleton.logic.abstraction.MatchLogic;
+import com.gambleton.models.Competitor;
 import com.gambleton.models.Game;
 import com.gambleton.models.Match;
 import com.gambleton.presentation.viewModels.gameController.CreateGame;
@@ -18,12 +20,14 @@ import java.util.List;
 @RestController
 @EnableCaching
 public class GameController {
+    private final CompetitorLogic competitorLogic;
     private GameLogic gameLogic;
     private MatchLogic matchLogic;
 
     public GameController() {
         this.gameLogic = Factory.getGameLogic();
         this.matchLogic = Factory.getMatchLogic();
+        this.competitorLogic = Factory.getCompetitorLogic();
     }
 
     @PostMapping("/game")
@@ -74,5 +78,18 @@ public class GameController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(matches);
+    }
+
+    @GetMapping("/game/{gameId}/competitor")
+    @Cacheable(value = "competitorsByGame", key = "#gameId")
+    public ResponseEntity<Object> getCompetitorsByGame(@PathVariable int gameId) {
+        List<Competitor> competitors;
+        try {
+            competitors = this.competitorLogic.getCompetitorsByGame(gameId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(competitors);
     }
 }
