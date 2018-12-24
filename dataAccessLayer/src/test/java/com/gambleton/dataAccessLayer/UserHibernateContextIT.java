@@ -15,7 +15,7 @@ import java.util.List;
 
 public class UserHibernateContextIT {
     private SessionFactory sessionFactory;
-    UserHibernateContext userHibernateContext;
+    private UserHibernateContext userHibernateContext;
 
     @Before
     public void setupEachTest() {
@@ -59,6 +59,7 @@ public class UserHibernateContextIT {
         user.setRole(Role.Gambler);
         user.setUsername("test");
         user.setPassword("Test123!");
+        user.setMoney(123.22);
         sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().save(user);
         sessionFactory.getCurrentSession().getTransaction().commit();
@@ -84,6 +85,7 @@ public class UserHibernateContextIT {
         user.setRole(Role.Gambler);
         user.setUsername(username);
         user.setPassword("Test123!");
+        user.setMoney(123.22);
         sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().save(user);
         sessionFactory.getCurrentSession().getTransaction().commit();
@@ -113,6 +115,7 @@ public class UserHibernateContextIT {
         user.setRole(Role.Gambler);
         user.setUsername("test");
         user.setPassword("Test123!");
+        user.setMoney(123.22);
         sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().save(user);
         sessionFactory.getCurrentSession().getTransaction().commit();
@@ -140,6 +143,8 @@ public class UserHibernateContextIT {
         user.setRole(Role.Gambler);
         user.setUsername("test");
         user.setPassword("Test123!");
+        user.setMoney(123.22);
+
 
         userHibernateContext.create(user);
 
@@ -165,6 +170,7 @@ public class UserHibernateContextIT {
         user.setRole(Role.Gambler);
         user.setUsername("test");
         user.setPassword("Test123!");
+        user.setMoney(123.22);
 
         sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().save(user);
@@ -199,6 +205,7 @@ public class UserHibernateContextIT {
         user.setRole(Role.Gambler);
         user.setUsername("test");
         user.setPassword("Test123!");
+        user.setMoney(123.22);
 
         sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().save(user);
@@ -221,6 +228,7 @@ public class UserHibernateContextIT {
         user.setUsername("kees");
         user.setPassword("Kees123!");
         user.setRole(Role.Administrator);
+        user.setMoney(12.99);
 
         this.userHibernateContext.update(user);
 
@@ -247,6 +255,10 @@ public class UserHibernateContextIT {
                 Assert.fail();
                 return;
             }
+            if (userFromCollection.getMoney() !=12.99){
+                Assert.fail();
+                return;
+            }
 
             Assert.assertTrue(true);
             return;
@@ -262,6 +274,7 @@ public class UserHibernateContextIT {
         user.setRole(Role.Gambler);
         user.setUsername("test");
         user.setPassword("Test123!");
+        user.setMoney(123.22);
 
         sessionFactory.getCurrentSession().beginTransaction();
         sessionFactory.getCurrentSession().save(user);
