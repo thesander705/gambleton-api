@@ -28,6 +28,7 @@ public class UserDefaultLogicTest {
         userFromMock.setPassword(username);
         userFromMock.setUsername(password);
         userFromMock.setId(1);
+        userFromMock.setMoney(123.22);
 
         when(userRepository.getByCredentials(username, password)).thenReturn(userFromMock);
 
@@ -49,6 +50,7 @@ public class UserDefaultLogicTest {
         userFromMock.setUsername("Test123!");
         userFromMock.setAuthToken(authToken);
         userFromMock.setId(1);
+        userFromMock.setMoney(123.22);
 
         when(userRepository.getByAuthToken(authToken)).thenReturn(userFromMock);
 
@@ -90,6 +92,7 @@ public class UserDefaultLogicTest {
         userFromRepository.setPassword(password);
         userFromRepository.setRole(Role.Gambler);
         userFromRepository.setAuthToken("12345sdfghxcvbn");
+        userFromRepository.setMoney(123.22);
 
         when(userRepository.getByCredentials(username, password)).thenReturn(userFromRepository);
 
@@ -109,6 +112,7 @@ public class UserDefaultLogicTest {
         userFromRepository.setPassword("Test123!");
         userFromRepository.setRole(Role.Gambler);
         userFromRepository.setAuthToken(authToken);
+        userFromRepository.setMoney(123.22);
 
         when(userRepository.getByAuthToken(authToken)).thenReturn(userFromRepository);
 

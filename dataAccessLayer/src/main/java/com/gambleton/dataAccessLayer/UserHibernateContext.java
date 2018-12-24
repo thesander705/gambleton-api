@@ -112,6 +112,7 @@ public class UserHibernateContext implements UserContext {
         toUpdate.setRole(entity.getRole());
         toUpdate.setUsername(entity.getUsername());
         toUpdate.setPassword(entity.getPassword());
+        toUpdate.setMoney(entity.getMoney());
 
         session.update(toUpdate);
         session.getTransaction().commit();

@@ -38,6 +38,7 @@ public class UserDefaultRepositoryTest {
         userFromContext.setUsername("test");
         userFromContext.setPassword(password);
         userFromContext.setRole(Role.Gambler);
+        userFromContext.setMoney(123.22);
 
         when(userContext.getByUsername("test")).thenReturn(userFromContext);
 
@@ -58,6 +59,7 @@ public class UserDefaultRepositoryTest {
         userFromContext.setUsername("test");
         userFromContext.setPassword(BCrypt.hashpw(password, BCrypt.gensalt(8)));
         userFromContext.setRole(Role.Gambler);
+        userFromContext.setMoney(123.22);
 
         when(userContext.getByUsername("test")).thenReturn(userFromContext);
 
@@ -78,6 +80,7 @@ public class UserDefaultRepositoryTest {
         userFromContext.setUsername("test");
         userFromContext.setPassword(BCrypt.hashpw(password, BCrypt.gensalt(8)));
         userFromContext.setRole(Role.Gambler);
+        userFromContext.setMoney(123.22);
 
         when(userContext.getByUsername("test")).thenReturn(userFromContext);
 
@@ -95,6 +98,7 @@ public class UserDefaultRepositoryTest {
         userToCreate.setUsername("Test");
         userToCreate.setPassword("Password123!");
         userToCreate.setAuthToken("1234567asdsvsd");
+        userToCreate.setMoney(123.22);
 
         ArgumentCaptor<User> argument = ArgumentCaptor.forClass(User.class);
 
@@ -117,6 +121,7 @@ public class UserDefaultRepositoryTest {
         userToCreate.setRole(Role.Gambler);
         userToCreate.setUsername("Test");
         userToCreate.setPassword(password);
+        userToCreate.setMoney(123.22);
 
         ArgumentCaptor<User> argument = ArgumentCaptor.forClass(User.class);
 
@@ -145,6 +150,7 @@ public class UserDefaultRepositoryTest {
         userFromContext.setPassword(BCrypt.hashpw("Test123!", BCrypt.gensalt(8)));
         userFromContext.setRole(Role.Gambler);
         userFromContext.setAuthToken(authToken);
+        userFromContext.setMoney(123.22);
 
         when(userContext.getByAuthToken(authToken)).thenReturn(userFromContext);
 
@@ -176,6 +182,7 @@ public class UserDefaultRepositoryTest {
         userFromContext.setPassword(BCrypt.hashpw("Test123!", BCrypt.gensalt(8)));
         userFromContext.setRole(Role.Gambler);
         userFromContext.setAuthToken("12345sdfghxcvbn");
+        userFromContext.setMoney(123.22);
 
         when(userContext.get(id)).thenReturn(userFromContext);
 
@@ -195,6 +202,7 @@ public class UserDefaultRepositoryTest {
         userFromContext.setPassword(BCrypt.hashpw("Test123!", BCrypt.gensalt(8)));
         userFromContext.setRole(Role.Gambler);
         userFromContext.setAuthToken("12345sdfghxcvbn");
+        userFromContext.setMoney(123.22);
 
         when(userContext.get(id)).thenReturn(userFromContext);
 
@@ -213,6 +221,7 @@ public class UserDefaultRepositoryTest {
         userFromContext1.setPassword(BCrypt.hashpw("Test123!", BCrypt.gensalt(8)));
         userFromContext1.setRole(Role.Gambler);
         userFromContext1.setAuthToken("12345sdfghxcvbn");
+        userFromContext1.setMoney(123.22);
 
         User userFromContext2 = new User();
         userFromContext2.setId(2);
@@ -220,6 +229,7 @@ public class UserDefaultRepositoryTest {
         userFromContext2.setPassword(BCrypt.hashpw("Test123!2", BCrypt.gensalt(8)));
         userFromContext2.setRole(Role.Gambler);
         userFromContext2.setAuthToken("12345sdfghxcvbn2");
+        userFromContext2.setMoney(666.66);
 
         ArrayList<User> allUsers = new ArrayList<User>();
         allUsers.add(userFromContext1);
@@ -253,6 +263,7 @@ public class UserDefaultRepositoryTest {
         userToUpdate.setUsername("Test");
         userToUpdate.setPassword("Password123!");
         userToUpdate.setAuthToken("1234567asdsvsd");
+        userToUpdate.setMoney(123.22);
 
         ArgumentCaptor<User> argument = ArgumentCaptor.forClass(User.class);
         doNothing().when(userContext).update(any(User.class));
@@ -264,6 +275,7 @@ public class UserDefaultRepositoryTest {
         Assert.assertEquals(argument.getValue().getAuthToken(), userToUpdate.getAuthToken());
         Assert.assertEquals(argument.getValue().getUsername(), userToUpdate.getUsername());
         Assert.assertEquals(argument.getValue().getId(), userToUpdate.getId());
+        Assert.assertEquals(argument.getValue().getMoney(), userToUpdate.getMoney(), 0);
     }
 
     @Test
