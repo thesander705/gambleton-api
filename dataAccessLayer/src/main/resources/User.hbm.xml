@@ -23,6 +23,6 @@
                 <param name="type">12</param>
             </type>
         </property>
-
+        <property name="money" type="double" />
     </class>
 </hibernate-mapping>
