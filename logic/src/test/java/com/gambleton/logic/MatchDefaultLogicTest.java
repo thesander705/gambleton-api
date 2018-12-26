@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -210,4 +211,56 @@ public class MatchDefaultLogicTest {
         }
         Assert.assertEquals(2, allMatchsToTest.size());
     }
+
+    @Test
+    public void getReturnsMatchWhenCorrectId() {
+        MatchRepository matchRepository = mock(MatchRepository.class);
+
+        int id = 1;
+
+        Game game = new Game();
+        game.setDescription("Tennis game");
+        game.setName("Tennis");
+
+        Competitor competitor1 = new Competitor();
+        competitor1.setDescription("Test competitor");
+        competitor1.setName("Test competitor");
+        competitor1.setGame(game);
+
+        Competitor competitor2 = new Competitor();
+        competitor2.setDescription("Test competitor2");
+        competitor2.setName("Test competitor2");
+        competitor2.setGame(game);
+
+        BetOption betOption1 = new BetOption();
+        betOption1.setPayoutRate(2);
+        betOption1.setCompetitor(competitor1);
+
+        BetOption betOption2 = new BetOption();
+        betOption2.setPayoutRate(1);
+        betOption2.setCompetitor(competitor2);
+
+        Match match = new Match();
+        match.setId(id);
+        match.setTitle("name");
+        match.setDescription("description");
+        List<BetOption> betOptions = new ArrayList<>();
+        betOptions.add(betOption1);
+        betOptions.add(betOption2);
+        match.setBetOptions(betOptions);
+        Calendar calendar = new Calendar.Builder().build();
+        calendar.set(2018, 11, 13, 20, 30);
+        Date date = calendar.getTime();
+        match.setStartDate(date);
+        calendar.set(2018, 11, 13, 22, 30);
+        date = calendar.getTime();
+        match.setEndDate(date);
+
+        when(matchRepository.get(id)).thenReturn(match);
+
+        MatchLogic matchLogic = new MatchDefaultLogic(matchRepository);
+        Match matchFromRepository = matchLogic.getMatch(id);
+        assertNotNull(matchFromRepository);
+    }
+
 }
