@@ -14,8 +14,8 @@
             <generator class="native"/>
         </id>
 
-        <property name="title" type="string"/>
-        <property name="description" type="string"/>
+        <property name="title" type="text"/>
+        <property name="description" type="text"/>
         <many-to-one name="game" class="com.gambleton.models.Game" lazy="false"/>
         <list name="betOptions" lazy="false">
             <key>

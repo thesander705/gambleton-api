@@ -14,8 +14,8 @@
             <generator class="native"/>
         </id>
 
-        <property name="name" type="string"/>
-        <property name="description" type="string"/>
+        <property name="name" type="text"/>
+        <property name="description" type="text"/>
         <many-to-one name="game" class="com.gambleton.models.Game" lazy="false"/>
     </class>
 </hibernate-mapping>
