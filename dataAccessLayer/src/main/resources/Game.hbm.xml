@@ -14,7 +14,7 @@
             <generator class="native"/>
         </id>
 
-        <property name="name" type="string"/>
-        <property name="description" type="string"/>
+        <property name="name" type="text"/>
+        <property name="description" type="text"/>
     </class>
 </hibernate-mapping>

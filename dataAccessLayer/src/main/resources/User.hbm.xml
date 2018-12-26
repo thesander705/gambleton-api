@@ -15,7 +15,7 @@
         </id>
 
         <property name = "username" type = "string"/>
-        <property name="password" type="string" />
+        <property name="password" type="text" />
         <property name="authToken" type="string" />
         <property name = "role">
             <type name="org.hibernate.type.EnumType">
