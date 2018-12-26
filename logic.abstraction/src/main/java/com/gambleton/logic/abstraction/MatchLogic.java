@@ -13,4 +13,6 @@ public interface MatchLogic {
     List<Match> getAllMatches();
 
     List<Match> getMatchesByGame(int gameId);
+
+    Match getMatch(int matchId);
 }

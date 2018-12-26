@@ -242,21 +242,21 @@ public class UserHibernateContextIT {
             }
 
             if (!userFromCollection.getUsername().equals("kees")){
-                Assert.fail();
+                Assert.fail("Name fails");
                 return;
             }
 
             if (!userFromCollection.getPassword().equals("Kees123!")){
-                Assert.fail();
+                Assert.fail("password fails");
                 return;
             }
 
             if (userFromCollection.getRole() != Role.Administrator){
-                Assert.fail();
+                Assert.fail("role fails");
                 return;
             }
             if (userFromCollection.getMoney() !=12.99){
-                Assert.fail();
+                Assert.fail("Money fails");
                 return;
             }
 
@@ -264,7 +264,7 @@ public class UserHibernateContextIT {
             return;
         }
 
-        Assert.fail();
+        Assert.fail("Other fails");
     }
 
     @Test

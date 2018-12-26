@@ -13,10 +13,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +52,7 @@ public class MatchController {
 
     @GetMapping("/match")
     @Cacheable("matches")
-    public ResponseEntity<Object> getAllMatchs() {
+    public ResponseEntity<Object> getAllMatches() {
         List<Match> matchs;
         try {
             matchs = this.matchLogic.getAllMatches();
@@ -64,6 +61,19 @@ public class MatchController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(matchs);
+    }
+
+    @GetMapping("/match/{matchId}")
+    @Cacheable(value = "match", key = "#matchId")
+    public ResponseEntity<Object> getMatch(@PathVariable int matchId) {
+        Match match;
+        try {
+            match = this.matchLogic.getMatch(matchId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(match);
     }
 
     private com.gambleton.models.BetOption convertBetOptionViewModelToBetOption(BetOption betOption) {

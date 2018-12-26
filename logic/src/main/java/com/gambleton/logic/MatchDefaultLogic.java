@@ -37,4 +37,9 @@ public class MatchDefaultLogic implements MatchLogic {
     public List<Match> getMatchesByGame(int gameId) {
         return this.matchRepository.getMatchesByGame(gameId);
     }
+
+    @Override
+    public Match getMatch(int matchId) {
+        return this.matchRepository.get(matchId);
+    }
 }
