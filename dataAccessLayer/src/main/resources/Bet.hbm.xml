@@ -1,0 +1,20 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.gambleton.models.Bet" table="bets">
+
+        <meta attribute="class-description">
+            This class contains the bet  details.
+        </meta>
+
+        <id name="id" type="int">
+            <generator class="native"/>
+        </id>
+
+        <property name="moneyPlaced" type="double"/>
+        <many-to-one name="betOption" class="com.gambleton.models.BetOption" lazy="false"/>
+    </class>
+</hibernate-mapping>
