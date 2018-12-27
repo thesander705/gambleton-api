@@ -339,4 +339,46 @@ public class UserHibernateContextIT {
 
         Assert.fail();
     }
+
+    @Test
+    public void updateAllowsAddingBets(){
+        sessionFactory.getCurrentSession().beginTransaction();
+        ArrayList<User> users = (ArrayList<User>) sessionFactory.getCurrentSession().createQuery("from User").list();
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        if (users == null || users.isEmpty()) {
+            Assert.fail();
+            return;
+        }
+
+        User user = users.get(0);
+
+        BetOption betOption = new BetOption();
+        betOption.setPayoutRate(1);
+        betOption.setCompetitor(this.user.getBets().get(0).getBetOption().getCompetitor());
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        sessionFactory.getCurrentSession().save(betOption);
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        Bet bet = new Bet();
+        bet.setMoneyPlaced(88);
+        bet.setBetOption(betOption);
+
+        user.getBets().add(bet);
+        this.userHibernateContext.update(user);
+
+        sessionFactory.getCurrentSession().beginTransaction();
+        users = (ArrayList<User>) sessionFactory.getCurrentSession().createQuery("from User").list();
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+        if (users == null || users.isEmpty()) {
+            Assert.fail();
+            return;
+        }
+
+        user = users.get(0);
+
+        Assert.assertEquals(this.user.getBets().size() + 1, user.getBets().size());
+    }
 }
