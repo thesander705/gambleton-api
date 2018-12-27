@@ -34,6 +34,6 @@ public class UserDefaultLogic implements UserLogic {
 
     @Override
     public void placeBet(int userPlacingBetId, int betOptionId, double amountOfMoney) {
-        
+
     }
 }
