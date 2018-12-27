@@ -31,4 +31,9 @@ public class UserDefaultLogic implements UserLogic {
         user.setPassword("");
         return user;
     }
+
+    @Override
+    public void placeBet(int userPlacingBetId, int betOptionId, double amountOfMoney) {
+        
+    }
 }
