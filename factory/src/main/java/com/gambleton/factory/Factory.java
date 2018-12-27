@@ -19,7 +19,7 @@ import com.gambleton.repository.UserDefaultRepository;
 
 public class Factory {
     public static UserLogic getUserLogic() {
-        return new UserDefaultLogic(new UserDefaultRepository(new UserHibernateContext()));
+        return new UserDefaultLogic(new UserDefaultRepository(new UserHibernateContext()), new MatchDefaultRepository(new MatchHibernateContext()));
     }
 
     public static GameLogic getGameLogic() {
