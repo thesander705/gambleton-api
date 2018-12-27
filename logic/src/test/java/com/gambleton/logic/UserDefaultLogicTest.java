@@ -2,6 +2,7 @@ package com.gambleton.logic;
 
 import com.gambleton.logic.abstraction.UserLogic;
 import com.gambleton.models.*;
+import com.gambleton.repository.abstraction.MatchRepository;
 import com.gambleton.repository.abstraction.UserRepository;
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,9 +21,12 @@ import static org.mockito.Mockito.*;
 public class UserDefaultLogicTest {
 
     private User user;
+    private List<Match> matches;
 
     @Before
     public void setupModels() {
+        this.matches = new ArrayList<>();
+
         Game game = new Game();
         game.setId(1);
         game.setName("Game");
@@ -36,8 +40,8 @@ public class UserDefaultLogicTest {
 
         Competitor competitor2 = new Competitor();
         competitor2.setId(2);
-        competitor2.setName("Competitor 1");
-        competitor2.setDescription("This is competitor 1");
+        competitor2.setName("Competitor 2");
+        competitor2.setDescription("This is competitor 2");
         competitor2.setGame(game);
 
         BetOption betOption1 = new BetOption();
@@ -49,6 +53,26 @@ public class UserDefaultLogicTest {
         betOption2.setId(2);
         betOption2.setPayoutRate(1);
         betOption2.setCompetitor(competitor2);
+
+
+        Match match1 = new Match();
+        match1.setTitle("match1");
+        match1.setDescription("this is match 1");
+        match1.setGame(game);
+        match1.setId(1);
+        match1.setBetOptions(new ArrayList<>());
+        match1.getBetOptions().add(betOption1);
+
+        Match match2 = new Match();
+        match2.setTitle("match2");
+        match2.setDescription("this is match 2");
+        match2.setGame(game);
+        match2.setId(2);
+        match2.setBetOptions(new ArrayList<>());
+        match2.getBetOptions().add(betOption2);
+
+        this.matches.add(match1);
+        this.matches.add(match2);
 
         Bet bet1 = new Bet();
         bet1.setId(1);
@@ -80,6 +104,7 @@ public class UserDefaultLogicTest {
         String password = "Test123!";
 
         UserRepository userRepository = mock(UserRepository.class);
+        MatchRepository matchRepository = mock(MatchRepository.class);
 
         User userFromMock = this.user;
         userFromMock.setPassword(username);
@@ -87,7 +112,7 @@ public class UserDefaultLogicTest {
 
         when(userRepository.getByCredentials(username, password)).thenReturn(userFromMock);
 
-        UserDefaultLogic userLogic = new UserDefaultLogic(userRepository);
+        UserDefaultLogic userLogic = new UserDefaultLogic(userRepository, matchRepository);
         User userFromLogic = userLogic.getByCredentials(username, password);
 
         Assert.assertEquals("", userFromLogic.getPassword());
@@ -98,13 +123,14 @@ public class UserDefaultLogicTest {
         String authToken = "qwergbsa37242jmsakd";
 
         UserRepository userRepository = mock(UserRepository.class);
+        MatchRepository matchRepository = mock(MatchRepository.class);
 
         User userFromMock = this.user;
         userFromMock.setAuthToken(authToken);
 
         when(userRepository.getByAuthToken(authToken)).thenReturn(userFromMock);
 
-        UserDefaultLogic userLogic = new UserDefaultLogic(userRepository);
+        UserDefaultLogic userLogic = new UserDefaultLogic(userRepository, matchRepository);
         User userFromLogic = userLogic.getByAuthToken(authToken);
 
         Assert.assertEquals("", userFromLogic.getPassword());
@@ -113,9 +139,11 @@ public class UserDefaultLogicTest {
     @Test
     public void getByCredentialsReturnsNullWhenUserIsNotFound() {
         UserRepository userRepository = mock(UserRepository.class);
+        MatchRepository matchRepository = mock(MatchRepository.class);
+
         when(userRepository.getByCredentials(anyString(), anyString())).thenReturn(null);
 
-        UserDefaultLogic userDefaultLogic = new UserDefaultLogic(userRepository);
+        UserDefaultLogic userDefaultLogic = new UserDefaultLogic(userRepository, matchRepository);
         User userFromLogic = userDefaultLogic.getByCredentials("test", "Test123!");
         assertNull(userFromLogic);
     }
@@ -123,9 +151,11 @@ public class UserDefaultLogicTest {
     @Test
     public void getByAuthTokenReturnsNullWhenUserIsNotFound() {
         UserRepository userRepository = mock(UserRepository.class);
+        MatchRepository matchRepository = mock(MatchRepository.class);
+
         when(userRepository.getByAuthToken(anyString())).thenReturn(null);
 
-        UserDefaultLogic userDefaultLogic = new UserDefaultLogic(userRepository);
+        UserDefaultLogic userDefaultLogic = new UserDefaultLogic(userRepository, matchRepository);
         User userFromLogic = userDefaultLogic.getByAuthToken("qwergbsa37242jmsakd");
         assertNull(userFromLogic);
     }
@@ -133,6 +163,8 @@ public class UserDefaultLogicTest {
     @Test
     public void getByCredentialsReturnsUserWhenCorrectAuthToken() {
         UserRepository userRepository = mock(UserRepository.class);
+        MatchRepository matchRepository = mock(MatchRepository.class);
+
         String username = "test";
         String password = "Passoword123!";
 
@@ -142,7 +174,7 @@ public class UserDefaultLogicTest {
 
         when(userRepository.getByCredentials(username, password)).thenReturn(userFromRepository);
 
-        UserLogic userLogic = new UserDefaultLogic(userRepository);
+        UserLogic userLogic = new UserDefaultLogic(userRepository, matchRepository);
         User userFromLogic = userLogic.getByCredentials(username, password);
         assertNotNull(userFromLogic);
     }
@@ -150,6 +182,8 @@ public class UserDefaultLogicTest {
     @Test
     public void getByAuthTokenReturnsUserWhenCorrectAuthToken() {
         UserRepository userRepository = mock(UserRepository.class);
+        MatchRepository matchRepository = mock(MatchRepository.class);
+
         String authToken = "12345sdfghxcvbn";
 
         User userFromRepository = this.user;
@@ -157,7 +191,7 @@ public class UserDefaultLogicTest {
 
         when(userRepository.getByAuthToken(authToken)).thenReturn(userFromRepository);
 
-        UserLogic userLogic = new UserDefaultLogic(userRepository);
+        UserLogic userLogic = new UserDefaultLogic(userRepository, matchRepository);
         User userFromLogic = userLogic.getByAuthToken(authToken);
         assertNotNull(userFromLogic);
     }
@@ -165,10 +199,14 @@ public class UserDefaultLogicTest {
     @Test
     public void placeBetsPassesCorrectData(){
         UserRepository userRepository = mock(UserRepository.class);
+        MatchRepository matchRepository = mock(MatchRepository.class);
+
         ArgumentCaptor<User> argument = ArgumentCaptor.forClass(User.class);
 
-        UserLogic matchLogic = new UserDefaultLogic(userRepository);
+        when(matchRepository.getAll()).thenReturn(this.matches);
+        when(userRepository.get(this.user.getId())).thenReturn(this.user);
 
+        UserLogic matchLogic = new UserDefaultLogic(userRepository, matchRepository);
         matchLogic.placeBet(this.user.getId(), this.user.getBets().get(0).getBetOption().getId(), 12);
 
         verify(userRepository).update(argument.capture());

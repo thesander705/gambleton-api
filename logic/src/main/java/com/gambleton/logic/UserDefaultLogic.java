@@ -1,15 +1,24 @@
 package com.gambleton.logic;
 
 import com.gambleton.logic.abstraction.UserLogic;
+import com.gambleton.models.Bet;
+import com.gambleton.models.BetOption;
+import com.gambleton.models.Match;
 import com.gambleton.models.User;
+import com.gambleton.repository.abstraction.MatchRepository;
 import com.gambleton.repository.abstraction.UserRepository;
+
+import java.security.InvalidParameterException;
+import java.util.List;
 
 public class UserDefaultLogic implements UserLogic {
 
     private UserRepository userRepository;
+    private MatchRepository matchRepository;
 
-    public UserDefaultLogic(UserRepository userRepository) {
+    public UserDefaultLogic(UserRepository userRepository, MatchRepository matchRepository) {
         this.userRepository = userRepository;
+        this.matchRepository = matchRepository;
     }
 
     @Override
@@ -34,6 +43,27 @@ public class UserDefaultLogic implements UserLogic {
 
     @Override
     public void placeBet(int userPlacingBetId, int betOptionId, double amountOfMoney) {
+        User user = this.userRepository.get(userPlacingBetId);
+        List<Match> matches = matchRepository.getAll();
+        BetOption betOption = null;
 
+        for (Match match : matches) {
+            for (BetOption betOptionByMatch : match.getBetOptions()) {
+                if (betOptionByMatch.getId() == betOptionId){
+                    betOption = betOptionByMatch;
+                }
+            }
+        }
+
+        if (betOption == null){
+            throw new InvalidParameterException();
+        }
+
+        Bet bet = new Bet();
+        bet.setMoneyPlaced(amountOfMoney);
+        bet.setBetOption(betOption);
+        user.getBets().add(bet);
+
+        this.userRepository.update(user);
     }
 }
