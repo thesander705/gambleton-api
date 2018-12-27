@@ -1,6 +1,7 @@
 package com.gambleton.dataAccessLayer;
 
 import com.gambleton.dataAccessLayer.abstraction.UserContext;
+import com.gambleton.models.Bet;
 import com.gambleton.models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,7 +18,7 @@ public class UserHibernateContext implements UserContext {
         this("hibernate.cfg.xml");
     }
 
-    UserHibernateContext(String filePath){
+    UserHibernateContext(String filePath) {
         try {
             sessionFactory = new Configuration().configure(filePath).buildSessionFactory();
         } catch (Throwable ex) {
@@ -108,11 +109,19 @@ public class UserHibernateContext implements UserContext {
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
 
+        for (Bet bet : entity.getBets()) {
+            if (bet.getId() == 0){
+                session.save(bet);
+            }
+        }
+
+
         User toUpdate = session.get(User.class, entity.getId());
         toUpdate.setRole(entity.getRole());
         toUpdate.setUsername(entity.getUsername());
         toUpdate.setPassword(entity.getPassword());
         toUpdate.setMoney(entity.getMoney());
+        toUpdate.setBets(entity.getBets());
 
         session.update(toUpdate);
         session.getTransaction().commit();
