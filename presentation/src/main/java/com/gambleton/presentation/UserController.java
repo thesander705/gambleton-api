@@ -46,7 +46,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.resolve(200)).body(user);
     }
 
-    @PostMapping("/bets/")
+    @PostMapping("/bets")
     @CacheEvict(value = "user", allEntries = true)
     public ResponseEntity<Object> placeBets(@RequestBody PlaceBets placeBetsParams) {
         UserLogic userLogic = Factory.getUserLogic();
