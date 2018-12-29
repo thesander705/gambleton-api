@@ -197,7 +197,7 @@ public class UserDefaultLogicTest {
     }
 
     @Test
-    public void placeBetsPassesCorrectData(){
+    public void placeBetsPassesCorrectData() {
         UserRepository userRepository = mock(UserRepository.class);
         MatchRepository matchRepository = mock(MatchRepository.class);
 
@@ -215,14 +215,14 @@ public class UserDefaultLogicTest {
 
         verify(userRepository).update(argument.capture());
 
-        Assert.assertEquals(3,argument.getValue().getBets().size());
-        Assert.assertEquals(this.user.getBets().get(0).getBetOption().getId(),argument.getValue().getBets().get(2).getBetOption().getId());
-        Assert.assertEquals(12,argument.getValue().getBets().get(2).getMoneyPlaced(), 0);
-        Assert.assertEquals(this.user.getId(),argument.getValue().getId());
+        Assert.assertEquals(3, argument.getValue().getBets().size());
+        Assert.assertEquals(this.user.getBets().get(0).getBetOption().getId(), argument.getValue().getBets().get(2).getBetOption().getId());
+        Assert.assertEquals(12, argument.getValue().getBets().get(2).getMoneyPlaced(), 0);
+        Assert.assertEquals(this.user.getId(), argument.getValue().getId());
     }
 
     @Test
-    public void placeBetsRemovesMoneyFromUserCorrectData(){
+    public void placeBetsRemovesMoneyFromUserCorrectData() {
         Double amountOfMoneyToBet = 12.0;
         UserRepository userRepository = mock(UserRepository.class);
         MatchRepository matchRepository = mock(MatchRepository.class);
@@ -243,5 +243,32 @@ public class UserDefaultLogicTest {
         verify(userRepository).update(argument.capture());
 
         Assert.assertEquals(oldMoney - amountOfMoneyToBet, this.user.getMoney(), 0);
+    }
+
+    @Test(expected = Exception.class)
+    public void placeBetsNotEnoughMoneyThrowsException() throws Exception {
+        Double amountOfMoneyToBet = 12.0;
+        UserRepository userRepository = mock(UserRepository.class);
+        MatchRepository matchRepository = mock(MatchRepository.class);
+
+        when(matchRepository.getAll()).thenReturn(this.matches);
+        when(userRepository.get(this.user.getId())).thenReturn(this.user);
+
+        UserLogic matchLogic = new UserDefaultLogic(userRepository, matchRepository);
+        this.user.setMoney(0);
+        matchLogic.placeBet(this.user.getId(), this.user.getBets().get(0).getBetOption().getId(), amountOfMoneyToBet);
+    }
+
+    @Test(expected = Exception.class)
+    public void placeBetsWrongBetOptionIdThrowsException() throws Exception {
+        Double amountOfMoneyToBet = 12.0;
+        UserRepository userRepository = mock(UserRepository.class);
+        MatchRepository matchRepository = mock(MatchRepository.class);
+
+        when(matchRepository.getAll()).thenReturn(this.matches);
+        when(userRepository.get(this.user.getId())).thenReturn(this.user);
+
+        UserLogic matchLogic = new UserDefaultLogic(userRepository, matchRepository);
+        matchLogic.placeBet(this.user.getId(), 88, amountOfMoneyToBet);
     }
 }
