@@ -7,5 +7,5 @@ public interface UserLogic {
 
     User getByAuthToken(String authToken);
 
-    void placeBet(int userPlacingBetId, int betOptionId, double amountOfMoney);
+    void placeBet(int userPlacingBetId, int betOptionId, double amountOfMoney) throws Exception;
 }

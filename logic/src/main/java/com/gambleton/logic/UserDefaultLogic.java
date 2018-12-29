@@ -42,8 +42,14 @@ public class UserDefaultLogic implements UserLogic {
     }
 
     @Override
-    public void placeBet(int userPlacingBetId, int betOptionId, double amountOfMoney) {
+    public void placeBet(int userPlacingBetId, int betOptionId, double amountOfMoney) throws Exception{
         User user = this.userRepository.get(userPlacingBetId);
+        if (user.getMoney() < amountOfMoney){
+            throw new Exception("Not enough money");
+        }
+
+        user.setMoney(user.getMoney() - amountOfMoney);
+
         List<Match> matches = matchRepository.getAll();
         BetOption betOption = null;
 
