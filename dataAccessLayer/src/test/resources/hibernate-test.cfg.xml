@@ -42,6 +42,7 @@
         <mapping resource = "Match.hbm.xml"/>
         <mapping resource = "Competitor.hbm.xml"/>
         <mapping resource = "BetOption.hbm.xml"/>
+        <mapping resource = "Bet.hbm.xml"/>
 
     </session-factory>
 

@@ -1,5 +1,7 @@
 package com.gambleton.models;
 
+import java.util.List;
+
 public class User {
 
     private int id;
@@ -13,6 +15,8 @@ public class User {
     private String authToken;
 
     private double money;
+
+    private List<Bet> bets;
 
     public String getUsername() {
         return username;
@@ -60,5 +64,13 @@ public class User {
 
     public void setMoney(double money) {
         this.money = money;
+    }
+
+    public List<Bet> getBets() {
+        return bets;
+    }
+
+    public void setBets(List<Bet> bets) {
+        this.bets = bets;
     }
 }

@@ -24,5 +24,14 @@
             </type>
         </property>
         <property name="money" type="double" />
+        <list name="bets" lazy="false">
+            <key>
+                <column name="user_id" not-null="false">
+
+                </column>
+            </key>
+            <index/>
+            <one-to-many class="com.gambleton.models.Bet"/>
+        </list>
     </class>
 </hibernate-mapping>
