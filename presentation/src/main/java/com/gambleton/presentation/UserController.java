@@ -35,7 +35,7 @@ public class UserController {
 
     @PostMapping("/userByAuthToken")
     @Cacheable(value = "user", key = "#authToken.authToken")
-    public ResponseEntity<Object> getUserByCredentials(@RequestBody ByAuthToken authToken) {
+    public ResponseEntity<Object> getUserByAuthToken(@RequestBody ByAuthToken authToken) {
         UserLogic userLogic = Factory.getUserLogic();
         User user = userLogic.getByAuthToken(authToken.getAuthToken());
 
