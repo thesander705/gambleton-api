@@ -4,9 +4,8 @@ import com.gambleton.factory.Factory;
 import com.gambleton.logic.abstraction.CompetitorLogic;
 import com.gambleton.logic.abstraction.GameLogic;
 import com.gambleton.logic.abstraction.MatchLogic;
-import com.gambleton.models.Competitor;
-import com.gambleton.models.Game;
-import com.gambleton.models.Match;
+import com.gambleton.logic.abstraction.UserLogic;
+import com.gambleton.models.*;
 import com.gambleton.presentation.viewModels.gameController.CreateGame;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -17,10 +16,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@SuppressWarnings("Duplicates")
 @RestController
 @EnableCaching
 public class GameController {
     private final CompetitorLogic competitorLogic;
+    private final UserLogic userLogic;
     private GameLogic gameLogic;
     private MatchLogic matchLogic;
 
@@ -28,12 +29,19 @@ public class GameController {
         this.gameLogic = Factory.getGameLogic();
         this.matchLogic = Factory.getMatchLogic();
         this.competitorLogic = Factory.getCompetitorLogic();
+        this.userLogic = Factory.getUserLogic();
     }
 
     @PostMapping("/game")
     @CacheEvict(value = "games", allEntries = true)
     public ResponseEntity<Object> createGame(@RequestBody CreateGame game) {
         try {
+            User requestingUser = this.userLogic.getByAuthToken(game.getAuthToken());
+
+            if (requestingUser == null || requestingUser.getRole() != Role.Administrator){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }
+
             this.gameLogic.CreateGame(game.getName(), game.getDescription());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
