@@ -4,6 +4,7 @@ public class PlaceBets {
     private int userPlacingBetId;
     private int betOptionId;
     private double amountOfMoney;
+    private String authToken;
 
     public int getUserPlacingBetId() {
         return userPlacingBetId;
@@ -27,5 +28,13 @@ public class PlaceBets {
 
     public void setAmountOfMoney(double amountOfMoney) {
         this.amountOfMoney = amountOfMoney;
+    }
+
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
 }

@@ -3,6 +3,7 @@ package com.gambleton.presentation.viewModels.gameController;
 public class CreateGame {
     private String name;
     private String description;
+    private String authToken;
 
     public String getName() {
         return name;
@@ -18,5 +19,13 @@ public class CreateGame {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
 }

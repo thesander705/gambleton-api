@@ -4,8 +4,11 @@ import com.gambleton.factory.Factory;
 import com.gambleton.logic.abstraction.CompetitorLogic;
 import com.gambleton.logic.abstraction.GameLogic;
 import com.gambleton.logic.abstraction.MatchLogic;
+import com.gambleton.logic.abstraction.UserLogic;
 import com.gambleton.models.Game;
 import com.gambleton.models.Match;
+import com.gambleton.models.Role;
+import com.gambleton.models.User;
 import com.gambleton.presentation.viewModels.matchController.CreateMatch;
 import com.gambleton.presentation.viewModels.matchController.createMatch.BetOption;
 import org.springframework.cache.annotation.CacheEvict;
@@ -19,17 +22,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("Duplicates")
 @RestController
 @EnableCaching
 public class MatchController {
     MatchLogic matchLogic;
     CompetitorLogic competitorLogic;
     GameLogic gameLogic;
+    UserLogic userLogic;
 
     public MatchController() {
         this.matchLogic = Factory.getMatchLogic();
         this.competitorLogic = Factory.getCompetitorLogic();
         this.gameLogic = Factory.getGameLogic();
+        this.userLogic = Factory.getUserLogic();
     }
 
     @PostMapping("/match")
@@ -37,6 +43,12 @@ public class MatchController {
     public ResponseEntity<Object> createMatch(@RequestBody CreateMatch match) {
         List<com.gambleton.models.BetOption> betOptions = new ArrayList<>();
         try {
+            User requestingUser = this.userLogic.getByAuthToken(match.getAuthToken());
+
+            if (requestingUser == null || requestingUser.getRole() != Role.Administrator){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }
+
             for (BetOption betoption : match.getBetOptions()) {
                 betOptions.add(convertBetOptionViewModelToBetOption(betoption));
             }

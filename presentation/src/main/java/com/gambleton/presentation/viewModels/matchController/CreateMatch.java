@@ -12,6 +12,7 @@ public class CreateMatch {
     private List<BetOption> betOptions;
     private Date startDate;
     private Date endDate;
+    private String authToken;
 
     public String getTitle() {
         return title;
@@ -59,5 +60,13 @@ public class CreateMatch {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
 }

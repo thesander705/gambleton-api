@@ -4,6 +4,7 @@ public class CreateCompetitor {
     private String name;
     private String description;
     private int gameId;
+    private String authToken;
 
     public String getName() {
         return name;
@@ -27,5 +28,13 @@ public class CreateCompetitor {
 
     public void setGameId(int gameId) {
         this.gameId = gameId;
+    }
+
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
 }

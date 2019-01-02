@@ -2,6 +2,7 @@ package com.gambleton.presentation;
 
 import com.gambleton.factory.Factory;
 import com.gambleton.logic.abstraction.UserLogic;
+import com.gambleton.models.Role;
 import com.gambleton.models.User;
 import com.gambleton.presentation.viewModels.userController.ByAuthToken;
 import com.gambleton.presentation.viewModels.userController.Credentials;
@@ -50,6 +51,11 @@ public class UserController {
     @CacheEvict(value = "user", allEntries = true)
     public ResponseEntity<Object> placeBets(@RequestBody PlaceBets placeBetsParams) {
         UserLogic userLogic = Factory.getUserLogic();
+
+        User requestingUser = userLogic.getByAuthToken(placeBetsParams.getAuthToken());
+        if (requestingUser == null || requestingUser.getId() != placeBetsParams.getUserPlacingBetId()){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
 
         try {
             userLogic.placeBet(placeBetsParams.getUserPlacingBetId(), placeBetsParams.getBetOptionId(), placeBetsParams.getAmountOfMoney());
